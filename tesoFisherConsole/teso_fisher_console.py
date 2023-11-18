@@ -1,4 +1,3 @@
-# from __future__ import print_function
 import argparse
 import logging
 import time
@@ -8,7 +7,7 @@ import keyboard
 
 import pyWinCoreAudio
 
-logger = logging.getLogger('main')
+logger = logging.getLogger('teso_fisher_console.py')
 logger.setLevel(logging.DEBUG)
 
 ch = logging.StreamHandler()
@@ -57,12 +56,16 @@ def get_args(args: argparse.Namespace) -> tuple[Any, Any]:
     return dev, min_pv
 
 
-def get_list_of_devices() -> None:
+def get_list_of_devices() -> list:
     logger.info(f"----------------------------------")
     logger.info(f"List of devices:")
+    device_list = []
     for n, d in enumerate(pyWinCoreAudio.AudioDevices):
         for rep in d.render_endpoints:
-            logger.info(f"render endpoint {n}, id({rep.id}): {rep.name} is a {rep.form_factor}")
+            if rep.form_factor in ["Headphones", "Speakers"]:
+                logger.info(f"render endpoint {n}, id({rep.id}): {rep.name} is a {rep.form_factor}")
+                device_list.append(rep.name)
+    return device_list
 
 
 def get_device_by_name(name: str) -> Any:
@@ -96,7 +99,7 @@ def action() -> None:
 def loop(dev: Any, min_pv: float):
     while True:
         if get_peak_value(dev) >= min_pv:
-            logger.info(f"fish: {dev.volume.peak_meter.peak_value}")
+            logger.info(f"fish: {get_peak_value(dev)}")
             action()
 
 
