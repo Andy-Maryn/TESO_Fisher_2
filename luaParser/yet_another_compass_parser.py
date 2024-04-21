@@ -1,0 +1,38 @@
+from typing import Optional
+
+from luaParser.account_wide import AccountWide
+from luaParser.common import search
+from luaParser.lua_parser import LuaParser
+
+
+class YetAnotherCompassParser(LuaParser):
+    """YetAnotherCompass Parser"""
+    lua_file_name: str = 'YetAnotherCompass.lua'
+
+    account_wide: Optional[AccountWide] = None
+
+    left_point: Optional[int] = None
+    top_point: Optional[int] = None
+    right_point: Optional[int] = None
+    bottom_point: Optional[int] = None
+
+    @classmethod
+    def load_data(cls) -> None:
+        super(YetAnotherCompassParser, cls).load_data()
+
+        cls.account_wide = cls.get_account_wide()
+
+        cls.left_point = cls.account_wide.position.get('x')
+        cls.top_point = cls.account_wide.position.get('y')
+        cls.right_point = cls.left_point + cls.account_wide.size
+        cls.bottom_point = cls.top_point + cls.account_wide.size
+
+    @classmethod
+    def get_account_wide(cls) -> AccountWide:
+        return AccountWide(search(cls.load_dict, 'AccountWide'))
+
+
+if __name__ == '__main__':
+    YetAnotherCompass = YetAnotherCompassParser()
+    YetAnotherCompass.load_data()
+    print(YetAnotherCompass.load_dict)
