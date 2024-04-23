@@ -14,11 +14,6 @@ class LuaParser:
     def path(cls) -> Path:
         return cls._root / cls.lua_file_name
 
-    def load_file(self) -> str:
-        with open(self.path, "r") as file:
-            data = file.read()
-        return data
-
     @classmethod
     def load_data(cls) -> None:
         """Load data from .lua and convert to dictionary"""

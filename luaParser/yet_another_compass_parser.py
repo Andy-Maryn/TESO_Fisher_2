@@ -32,9 +32,3 @@ class YetAnotherCompassParser(LuaParser):
     @classmethod
     def get_account_wide(cls) -> AccountWide:
         return AccountWide(search(cls.load_dict, 'AccountWide'))
-
-
-if __name__ == '__main__':
-    YetAnotherCompass = YetAnotherCompassParser()
-    YetAnotherCompass.load_data()
-    print(YetAnotherCompass.load_dict)

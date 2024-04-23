@@ -1,6 +1,6 @@
 import numpy as np
 import pytesseract
-from PIL import Image, ImageEnhance, ImageFilter
+from PIL import Image, ImageFilter
 
 from luaParser.eso_locate_parser import ESOLocateParser
 from screenCapture.screen_capture import ScreeCapture
@@ -29,8 +29,6 @@ class ESOLocateCapture(ScreeCapture):
                 mode='RGB'
             ), [3, 3]
         )
-        # .img.filter(ImageFilter.BoxBlur(200))
-        # cls.img = ImageEnhance.Sharpness(cls.img).enhance(0.01)
 
         for _ in range(1):
             cls.img = cls.img.filter(ImageFilter.MinFilter(3))

@@ -36,7 +36,3 @@ class ESOLocateParser(LuaParser):
     @classmethod
     def get_eso_locate(cls) -> dict:
         return search(cls.load_dict, 'ESOlocate')
-
-
-if __name__ == '__main__':
-    main = ESOLocateParser()

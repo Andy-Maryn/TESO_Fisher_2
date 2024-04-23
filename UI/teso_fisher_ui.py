@@ -8,8 +8,6 @@ import customtkinter
 from tesoFisherConsole.teso_fisher_console import get_list_of_devices, get_peak_value, action, get_device_by_name, \
     DEVICE_NAME
 
-# from tools.TextWrapper import TextWrapper
-
 peak_value = Queue(maxsize=0)
 
 logger_teso_fisher_ui = logging.getLogger('teso_fisher_ui.py')
