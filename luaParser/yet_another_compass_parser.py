@@ -11,6 +11,7 @@ class YetAnotherCompassParser(LuaParser):
 
     account_wide: Optional[AccountWide] = None
 
+    size: Optional[int] = None
     left_point: Optional[int] = None
     top_point: Optional[int] = None
     right_point: Optional[int] = None
@@ -22,10 +23,11 @@ class YetAnotherCompassParser(LuaParser):
 
         cls.account_wide = cls.get_account_wide()
 
+        cls.size = cls.account_wide.size
         cls.left_point = cls.account_wide.position.get('x')
         cls.top_point = cls.account_wide.position.get('y')
-        cls.right_point = cls.left_point + cls.account_wide.size
-        cls.bottom_point = cls.top_point + cls.account_wide.size
+        cls.right_point = cls.left_point + cls.size
+        cls.bottom_point = cls.top_point + cls.size
 
     @classmethod
     def get_account_wide(cls) -> AccountWide:
