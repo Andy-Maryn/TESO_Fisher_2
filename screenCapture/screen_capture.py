@@ -10,7 +10,7 @@ class ScreeCapture:
     capture: ndarray[Any, dtype[Any]]
 
     main_color: ndarray[Any, dtype[Any]]
-    white_color = np.array([225, 225, 225])
+    white_color = np.array([255, 255, 255])
     black_color = np.array([0, 0, 0])
 
     @classmethod
