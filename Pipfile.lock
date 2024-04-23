@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "0cb49adcd24189d24f0306c5e9c852e534446d8f39b0cc7e524d62f5fae6d030"
+            "sha256": "fedbd2ab7afd84cf16f128af0619749267b62277b4cb6989ef16d4bef6e4eef2"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -15,48 +15,6 @@
             }
         ]
     },
-    "default": {
-        "comtypes": {
-            "hashes": [
-                "sha256:26f261b1eed6972d5cdaa3af1fadb3fa76fc59877d0a1293835327a76573380d",
-                "sha256:c8f2f0e995d73baf0bd899a948d62adeb9ab908c8270c66a67ff09dfcf4872b7"
-            ],
-            "index": "pypi",
-            "version": "==1.2.0"
-        },
-        "customtkinter": {
-            "hashes": [
-                "sha256:8a284d035ccd5537730bc83816bf6c456538ae81594749a946c86470cab6e87b",
-                "sha256:eddc1c416063e1ce1aa2793959b0814e95e22d3de3f2a940bd84828f7301f555"
-            ],
-            "index": "pypi",
-            "markers": "python_version >= '3.7'",
-            "version": "==5.2.1"
-        },
-        "darkdetect": {
-            "hashes": [
-                "sha256:a7509ccf517eaad92b31c214f593dbcf138ea8a43b2935406bbd565e15527a85",
-                "sha256:b5428e1170263eb5dea44c25dc3895edd75e6f52300986353cd63533fe7df8b1"
-            ],
-            "markers": "python_version >= '3.6'",
-            "version": "==0.8.0"
-        },
-        "future": {
-            "hashes": [
-                "sha256:34a17436ed1e96697a86f9de3d15a3b0be01d8bc8de9c1dffd59fb8234ed5307"
-            ],
-            "index": "pypi",
-            "markers": "python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'",
-            "version": "==0.18.3"
-        },
-        "keyboard": {
-            "hashes": [
-                "sha256:63ed83305955939ca5c9a73755e5cc43e8242263f5ad5fd3bb7e0b032f3d308b",
-                "sha256:8e9c2422f1217e0bd84489b9ecd361027cc78415828f4fe4f88dd4acd587947b"
-            ],
-            "index": "pypi",
-            "version": "==0.13.5"
-        }
-    },
+    "default": {},
     "develop": {}
 }

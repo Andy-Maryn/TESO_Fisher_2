@@ -4,10 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-keyboard = "*"
-comtypes = "*"
-future = "*"
-customtkinter = "*"
 
 [dev-packages]
 
