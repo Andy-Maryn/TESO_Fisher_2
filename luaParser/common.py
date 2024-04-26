@@ -60,5 +60,5 @@ def search(data: dict, lua_property: str, result: dict = None) -> dict | None:
 def set_lua_values(obj: Any, root: dict, mapping: dict[str, tuple]) -> None:
     for prop, value in mapping.items():
         value, to_type = value
-        param_value = to_type(root.get(prop))
+        param_value = to_type(root.get(value))
         setattr(obj, prop, param_value)
