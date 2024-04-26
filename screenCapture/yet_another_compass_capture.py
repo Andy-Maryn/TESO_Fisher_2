@@ -71,7 +71,7 @@ class YetAnotherCompassCapture(ScreeCapture):
         return find_point(direction_major, direction_axes)
 
     @classmethod
-    def get_segment_length(cls) -> float | None:
+    def get_compas_degree(cls) -> float | None:
         """
           0,   0 -> -75,  75
         150, 150 ->  75, -75

@@ -8,6 +8,7 @@ from numpy import ndarray, dtype
 
 class ScreeCapture:
     capture: ndarray[Any, dtype[Any]]
+    start_capture: ndarray[Any, dtype[Any]]
 
     main_color: ndarray[Any, dtype[Any]]
     white_color = np.array([255, 255, 255])
@@ -16,6 +17,11 @@ class ScreeCapture:
     @classmethod
     def get_cap(cls, point_left: int, point_top: int, point_right: int, point_bottom: int) -> None:
         """Captures the screen and returns the image obtained from the left-top and right-bottom points"""
+        cls.start_capture = np.array(
+            ImageGrab.grab(
+                bbox=(point_left, point_top, point_right, point_bottom)
+            )
+        )
         cls.capture = np.array(
             ImageGrab.grab(
                 bbox=(point_left, point_top, point_right, point_bottom)
