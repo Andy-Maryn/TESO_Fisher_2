@@ -33,9 +33,9 @@ class TestRotation:
             pytest.param((0, 0), (0, -9), 270, id="x=0,y =-9 => 270"),
             pytest.param((0, 0), (3, -9), 288.435, id="x=3,y =-9 => 288.435"),
         ])
-    def test_get_degree_between_2_points(self,
-                                         start_point: tuple[float, float],
-                                         destination_point: tuple[float, float],
-                                         expected_degree: float):
-        actual_degree = round(Rotation.get_degree_between_2_points(start_point, destination_point), 3)
+    def test_get_degree(self,
+                        start_point: tuple[float, float],
+                        destination_point: tuple[float, float],
+                        expected_degree: float):
+        actual_degree = round(Rotation.get_degree(start_point, destination_point), 3)
         assert actual_degree == expected_degree
