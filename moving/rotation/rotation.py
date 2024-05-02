@@ -4,6 +4,8 @@ from typing import Callable
 
 import mouse
 
+from screenCapture.yet_another_compass_capture import YetAnotherCompassCapture
+
 
 class Rotation:
     a = 1
@@ -16,6 +18,15 @@ class Rotation:
             )
         )
     ) * 2 + 180
+    calibrate: Callable[[float], float] = lambda x, a: math.degrees(
+        math.atan(
+            math.tan(
+                math.radians(
+                    (-x + a) / 2
+                )
+            )
+        )
+    ) * 2
     __p2d: Callable[[float], float] = lambda x: ((x - abs(x) / x) / 0.144) + 0.15
     __d2p: Callable[[float], float] = lambda y: (y - 0.15) * 0.144 + abs(y) / y
 
@@ -28,7 +39,7 @@ class Rotation:
                    duration=duration)
 
     @staticmethod
-    def get_degree_between_2_points(start_point: tuple[float, float], destination_point: tuple[float, float]) -> float:
+    def get_degree(start_point: tuple[float, float], destination_point: tuple[float, float]) -> float:
         cycle = 360
 
         _x, _y = start_point
@@ -49,6 +60,21 @@ class Rotation:
                 degree = 270
 
         return Rotation.degree(degree)
+
+    @staticmethod
+    def calibration(degree: float) -> float:
+        """
+            90 60 30                    (60+180) 240
+            -30 +30
+
+            45 15 360-15 (345)
+            -30
+        :param degree:
+        :return:
+        """
+        current_degree = Rotation.get_degree((0, 0), (YetAnotherCompassCapture.get_compas_direction()))
+        return Rotation.calibrate(degree, current_degree)
+        # Rotation.move_mouse(Rotation.__d2p(move))
 
 
 if __name__ == "__main__":
