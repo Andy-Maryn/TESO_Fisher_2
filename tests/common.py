@@ -7,6 +7,7 @@ from PIL import Image
 from luaParser.eso_locate_parser import ESOLocateParser
 from luaParser.lua_parser import LuaParser
 from luaParser.yet_another_compass_parser import YetAnotherCompassParser
+from matrix.destination import Destination
 from screenCapture.eso_locate_capture import ESOLocateCapture
 from screenCapture.yet_another_compass_capture import YetAnotherCompassCapture
 
@@ -15,17 +16,22 @@ ESO_LOCATE_CAPTURE_PATH = CAPTURE_PATH / Path("locate")
 
 
 @pytest.fixture(scope="session")
-def lua_data_path():
+def data_path():
     LuaParser._root = Path(r'C:\Users\Andy\PycharmProjects\tesoFisher\tests\lua')
+    Destination._root = Path(r'C:\Users\Andy\PycharmProjects\tesoFisher\tests\matrix')
     yield
     LuaParser._root = Path('C:/Users/Andy/Documents/Elder Scrolls Online/live/SavedVariables')
+    Destination._root = Path(r'C:\Users\Andy\PycharmProjects\tesoFisher\matrix')
 
 
 @pytest.fixture(scope="session", autouse=True)
-def load_data(lua_data_path):
+def load_data(data_path):
     ESOLocateParser.load_data()
     ESOLocateParser.set_user_property('BendreTolstyy')
+
     YetAnotherCompassParser.load_data()
+
+    Destination.load_data()
 
 
 @pytest.fixture
