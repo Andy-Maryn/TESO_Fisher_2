@@ -1,3 +1,5 @@
+"""ESOLocate capture"""
+import dataclasses
 import re
 
 import numpy as np
@@ -11,6 +13,7 @@ PATTERN = r"\d{2,3}[.,]\d{2}.*?\d{2,3}[.,]\d{2}\n"
 
 
 class ESOLocateCapture(ScreeCapture):
+    """Captures an image of ESOLocate coordinates"""
     main_color = np.array([207, 220, 189])
 
     @classmethod
@@ -21,10 +24,18 @@ class ESOLocateCapture(ScreeCapture):
             point_right=ESOLocateParser.right_point,
             point_bottom=ESOLocateParser.bottom_point)
 
-        cls.capture = cls.capture[:, 100:200, :]
+        cls.capture = cls.capture[:, 110:190, :]
 
     @classmethod
-    def _convert_image_2_text(cls) -> str:
+    def get_separate_data(cls):
+        """
+        Splits a coordinate image into individual numbers
+        :return:
+        """
+        return np.split(cls.capture, [8, 16, 20, 28, 36, 44, 52, 60, 64, 72, 80], axis=1)
+
+    @classmethod
+    def __convert_image_2_text(cls) -> str:
         return pytesseract.image_to_string(cls.resize_xn(
             Image.fromarray(
                 obj=cls.capture,
@@ -34,7 +45,11 @@ class ESOLocateCapture(ScreeCapture):
 
     @classmethod
     def get_current_position(cls) -> list[float] | None:
-        string = cls._convert_image_2_text()
+        """
+        Return current position
+        :return:
+        """
+        string = cls.__convert_image_2_text()
         coordinates: list[float] = []
         if re.fullmatch(pattern=PATTERN, string=string):
             coord_list = re.findall(r'\d{2,3}[.,]\d\d', string)

@@ -42,15 +42,16 @@ class ScreeCapture:
 
     @classmethod
     def segmentation(cls):
+        new_capture = np.zeros((cls.capture.shape[0], cls.capture.shape[1]))
         for line in range(cls.capture.shape[0]):
             for colum in range(cls.capture.shape[1]):
-                if not np.array_equal(cls.capture[line][colum], cls.main_color):
-                    cls.capture[line, colum] = cls.white_color
-                else:
-                    cls.capture[line, colum] = cls.black_color
+                if np.array_equal(cls.capture[line][colum], cls.main_color):
+                    new_capture[line, colum] = 1
+        cls.capture = new_capture
 
     @classmethod
     def segmentation_test(cls, color_error: int = 30):
+        new_capture = np.zeros((cls.capture.shape[0], cls.capture.shape[1]))
         for line in range(cls.capture.shape[0]):
             for colum in range(cls.capture.shape[1]):
                 if cls.capture[line][colum][0] in range(cls.main_color[0] - color_error,
@@ -59,6 +60,5 @@ class ScreeCapture:
                                                              cls.main_color[1] + color_error) and \
                         cls.capture[line][colum][2] in range(cls.main_color[2] - color_error,
                                                              cls.main_color[2] + color_error):
-                    cls.capture[line, colum] = cls.black_color
-                else:
-                    cls.capture[line, colum] = cls.white_color
+                    new_capture[line, colum] = 1
+        cls.capture = new_capture

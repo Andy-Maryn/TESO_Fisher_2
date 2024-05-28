@@ -77,6 +77,7 @@ class YetAnotherCompassCapture(ScreeCapture):
         150, 150 ->  75, -75
         :return:
         """
+        cls.get_cap()
         mid_point = YetAnotherCompassParser.size // 2
         x_axes: Callable[[int], int] = lambda _x: _x - mid_point
         y_axes: Callable[[int], int] = lambda _y: mid_point - _y
