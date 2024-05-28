@@ -12,7 +12,7 @@ class TestRotation:
             pytest.param(360, 360, id="360 => 360"),
             pytest.param(361, 1, id="361 => 1")])
     def test_degree(self, actual_degree: int, expected_degree):
-        assert round(Rotation.degree(actual_degree), 5) == expected_degree
+        assert round(Rotation._degree(actual_degree), 5) == expected_degree
 
     @pytest.mark.parametrize(
         'start_point, destination_point, expected_degree', [
@@ -38,18 +38,6 @@ class TestRotation:
                         expected_degree: float):
         actual_degree = round(Rotation.get_degree(start_point, destination_point), 3)
         assert actual_degree == expected_degree
-
-    @pytest.mark.parametrize(
-        'actual_degree, expected_degree', [
-            pytest.param(-1, 359, id="-1 => 359"),
-            pytest.param(0, 360, id="0 => 360"),
-            pytest.param(1, 1, id="1 => 1"),
-            pytest.param(359, 359, id="359 => 359"),
-            pytest.param(360, 360, id="360 => 360"),
-            pytest.param(361, 1, id="361 => 1")])
-    def test_calibration(self, actual_degree: int, expected_degree):
-        YetAnotherCompassCapture.get_compas_direction()
-        assert round(Rotation.degree(actual_degree), 5) == expected_degree
 
     @pytest.mark.parametrize(
         'yet_another_compass_capture, second_point_degree, expected_degree', [

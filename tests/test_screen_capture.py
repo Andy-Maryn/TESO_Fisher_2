@@ -11,6 +11,7 @@ class TestESOLocateCapture:
     def test_get_current_position(self,
                                   eso_locate_capture: None,
                                   expected_location: tuple[float, float]):
+        qwe = ESOLocateCapture.get_separate_data()
         actual_position = ESOLocateCapture.get_current_position()
         assert actual_position == expected_location
 

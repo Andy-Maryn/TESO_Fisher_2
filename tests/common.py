@@ -43,7 +43,7 @@ def eso_locate_capture(request):
                   ESOLocateParser.top_point,
                   ESOLocateParser.right_point,
                   ESOLocateParser.bottom_point))
-    )[:, 100:200, :]
+    )[:, 110:190, :]
     ESOLocateCapture.segmentation_test()
 
 
