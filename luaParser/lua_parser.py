@@ -1,8 +1,10 @@
+"""Lua parser"""
 import json
 from pathlib import Path
 
 
 class LuaParser:
+    """Lua Parser"""
     # TODO: path to 'Documents' folder should not be hard coded
     _root: Path = Path('C:/Users/Andy/Documents/Elder Scrolls Online/live/SavedVariables')
     lua_file_name: str = ''
@@ -12,6 +14,7 @@ class LuaParser:
     @classmethod
     @property
     def path(cls) -> Path:
+        """Path"""
         return cls._root / cls.lua_file_name
 
     @classmethod

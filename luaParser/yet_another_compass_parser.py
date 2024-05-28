@@ -1,3 +1,4 @@
+"""YetAnotherCompass parser"""
 from typing import Optional
 
 from luaParser.account_wide import AccountWide
@@ -31,4 +32,5 @@ class YetAnotherCompassParser(LuaParser):
 
     @classmethod
     def get_account_wide(cls) -> AccountWide:
+        """Get AccountWide"""
         return AccountWide(search(cls.load_dict, 'AccountWide'))

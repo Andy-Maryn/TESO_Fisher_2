@@ -1,3 +1,4 @@
+"""User"""
 from dataclasses import dataclass
 from typing import Optional
 
@@ -6,6 +7,7 @@ from luaParser.common import set_lua_values
 
 @dataclass
 class ESOLocate:
+    """ESOLocate"""
     __root: Optional[dict] = None
     __map_for_lua = {
         "x_position": ("0", int),

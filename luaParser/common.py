@@ -1,3 +1,4 @@
+"""Lua parser common"""
 import ctypes
 from enum import Enum
 from typing import Any, Callable
@@ -17,18 +18,21 @@ HORIZONTAL_BOARDS = 0
 
 
 class XPosition(Enum):
+    """Describe 'x' capture position"""
     left: Callable[[int], int] = lambda x: x + HORIZONTAL_BOARDS
     right: Callable[[int], int] = lambda x: x + WIDTH_SCREEN - (OBJECT_WIDTH + HORIZONTAL_BOARDS)
     mid: Callable[[int], int] = lambda x: x + (WIDTH_SCREEN // 2) - (OBJECT_WIDTH // 2)
 
 
 class YPosition(Enum):
+    """Describe 'y' capture position"""
     top: Callable[[int], int] = lambda y: y + TOP_BOARDS
     bottom: Callable[[int], int] = lambda y: y + HEIGHT_SCREEN - (OBJECT_HEIGHT + BOTTOM_BOARDS)
     mid: Callable[[int], int] = lambda y: y + (HEIGHT_SCREEN // 2) - (OBJECT_HEIGHT // 2)
 
 
 def eso_coordinate_to_screen_position(sector) -> Callable[[int, int], tuple[int, int]]:
+    """Convert EsoLocate coordinates to window coordinates"""
     switch: dict = {
         0: lambda x, y: (XPosition.left(x), YPosition.top(y)),
         1: lambda x, y: (XPosition.mid(x), YPosition.top(y)),
@@ -48,6 +52,7 @@ def eso_coordinate_to_screen_position(sector) -> Callable[[int, int], tuple[int,
 
 
 def search(data: dict, lua_property: str, result: dict = None) -> dict | None:
+    """Search data in .lua file"""
     if isinstance(data, dict):
         for key, val in data.items():
             if key == lua_property:
@@ -58,6 +63,7 @@ def search(data: dict, lua_property: str, result: dict = None) -> dict | None:
 
 
 def set_lua_values(obj: Any, root: dict, mapping: dict[str, tuple]) -> None:
+    """Write values from .lua to dataclasses"""
     for prop, value in mapping.items():
         value, to_type = value
         param_value = to_type(root.get(value))

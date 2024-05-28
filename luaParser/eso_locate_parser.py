@@ -1,3 +1,4 @@
+"""EsoLocate parser"""
 from collections.abc import KeysView
 from typing import Optional
 
@@ -25,6 +26,7 @@ class ESOLocateParser(LuaParser):
 
     @classmethod
     def get_eso_locate(cls) -> dict:
+        """Get 'ESOlocate' key"""
         result = {}
         default = search(cls.load_dict, 'Default')
         account = next(iter(default))
@@ -35,10 +37,12 @@ class ESOLocateParser(LuaParser):
 
     @classmethod
     def get_users_list(cls) -> KeysView:
+        """Return users list"""
         return cls.eso_locate.keys()
 
     @classmethod
     def set_user_property(cls, user: str):
+        """Set property"""
         cls.user = user
         properties = cls.eso_locate.get(cls.user)
 
