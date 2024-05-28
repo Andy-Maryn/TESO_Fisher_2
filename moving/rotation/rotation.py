@@ -1,15 +1,27 @@
+import logging
 import math
 import time
 from typing import Callable
 
 import mouse
 
+from luaParser.yet_another_compass_parser import YetAnotherCompassParser
 from screenCapture.yet_another_compass_capture import YetAnotherCompassCapture
+
+logger = logging.getLogger('rotation.py')
+logger.setLevel(logging.DEBUG)
+ch = logging.StreamHandler()
+ch.setLevel(logging.INFO)
+
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+ch.setFormatter(formatter)
+
+logger.addHandler(ch)
 
 
 class Rotation:
     a = 1
-    degree: Callable[[float], float] = lambda x: math.degrees(
+    _degree: Callable[[float], float] = lambda x: math.degrees(
         math.atan(
             math.tan(
                 math.radians(
@@ -18,17 +30,32 @@ class Rotation:
             )
         )
     ) * 2 + 180
-    calibrate: Callable[[float], float] = lambda x, a: math.degrees(
+    # _calibrate: Callable[[float], float] = lambda x, a: math.degrees(
+    #     math.atan(
+    #         math.tan(
+    #             math.radians(
+    #                 (-x + a) / 2
+    #             )
+    #         )
+    #     )
+    # ) * 2
+
+    __calibrate: Callable[[float], float] = lambda x: math.degrees(
         math.atan(
             math.tan(
                 math.radians(
-                    (-x + a) / 2
+                    x / 2
                 )
             )
         )
     ) * 2
+    _calibrate: Callable[[float], float] = lambda degree, compas_degree: Rotation.__calibrate(compas_degree - 90 - (90 - degree))
+
     __p2d: Callable[[float], float] = lambda x: ((x - abs(x) / x) / 0.144) + 0.15
-    __d2p: Callable[[float], float] = lambda y: (y - 0.15) * 0.144 + abs(y) / y
+    # __d2p: Callable[[float], float] = lambda y: (y - 0.15) * 0.144 + (abs(y) / y)
+    __d2p: Callable[[float], float] = lambda y: (y - 7.1 * (abs(y) / y)) / 6.9
+
+    # __d2p: Callable[[float], float] = lambda y: y / 0.144
 
     # TODO: setup duration
     @staticmethod
@@ -36,7 +63,7 @@ class Rotation:
         mouse.move(x=x,
                    y=y,
                    absolute=False,
-                   duration=duration)
+                   duration=Rotation.a)
 
     @staticmethod
     def get_degree(start_point: tuple[float, float], destination_point: tuple[float, float]) -> float:
@@ -59,7 +86,7 @@ class Rotation:
             else:
                 degree = 270
 
-        return Rotation.degree(degree)
+        return Rotation._degree(degree)
 
     @staticmethod
     def calibration(degree: float) -> float:
@@ -72,12 +99,22 @@ class Rotation:
         :param degree:
         :return:
         """
-        current_degree = Rotation.get_degree((0, 0), (YetAnotherCompassCapture.get_compas_direction()))
-        return Rotation.calibrate(degree, current_degree)
-        # Rotation.move_mouse(Rotation.__d2p(move))
+
+        logger.info(f"-get_compas_direction: {YetAnotherCompassCapture.get_compas_direction()}")
+        compas_degree = 360-Rotation.get_degree((0, 0), (YetAnotherCompassCapture.get_compas_direction()))
+
+        logger.info(f"-compas_degree: {compas_degree}")
+        logger.info(f"-degree: {degree}")
+        move = Rotation._calibrate(degree, compas_degree)
+        logger.info(f"-move_that_we_take: {move}")
+
+        logger.info(f"-Rotation: {Rotation.__d2p(move)}")
+        Rotation.move_mouse(Rotation.__d2p(move))
+        return move
 
 
 if __name__ == "__main__":
+    YetAnotherCompassParser.load_data()
     time.sleep(3)
     # _duration = random.SystemRandom().uniform(0.1, 1)
     # print(_duration)
@@ -95,5 +132,19 @@ if __name__ == "__main__":
     # print(_duration)
     # Rotation.move_mouse(-10, 0, _duration)
 
-    Rotation.move_mouse(10, 0, 0.5)
+    # Rotation.move_mouse(10, 0, 0.5)
     # Rotation.move_mouse(-10, 0, 1)
+    YetAnotherCompassCapture.get_cap()
+    compas_direction = YetAnotherCompassCapture.get_compas_direction()
+    degree_1 = Rotation.get_degree(start_point=(0, 0), destination_point=tuple(compas_direction))
+    print("degree: ", degree_1)
+
+    for i in range(20):
+        print(f'-{i}___')
+        Rotation.move_mouse(i, 0, 1)
+        YetAnotherCompassCapture.get_cap()
+        compas_direction = YetAnotherCompassCapture.get_compas_direction()
+        degree_2 = Rotation.get_degree(start_point=(0, 0), destination_point=tuple(compas_direction))
+        print("degree: ", degree_2)
+        print("degree_1 - degree_2", degree_1 - degree_2)
+        degree_1 = degree_2
