@@ -17,10 +17,10 @@ class ESOLocate:
         "version": ("version", int),
     }
 
-    position: Optional[dict] = None
-    centered: Optional[str] = None
-    size: Optional[int] = None
-    compassStyle: Optional[int] = None
+    x_position: Optional[int] = None
+    y_position: Optional[int] = None
+    sector: Optional[int] = None
+    sector2: Optional[int] = None
     version: Optional[int] = None
 
     def __post_init__(self):

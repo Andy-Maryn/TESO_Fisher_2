@@ -4,14 +4,15 @@ from typing import Optional
 
 from luaParser.common import search, eso_coordinate_to_screen_position, OBJECT_WIDTH, OBJECT_HEIGHT
 from luaParser.lua_parser import LuaParser
-from luaParser.user import ESOLocate
+from luaParser.eso_locate import ESOLocate
 
 
+# noinspection SpellCheckingInspection
 class ESOLocateParser(LuaParser):
     """ESO Locate Parser"""
     lua_file_name: str = 'ESOlocate.lua'
 
-    eso_locate: Optional[dict] = None
+    eso_locate: Optional[dict[str, ESOLocate]] = None
     user: Optional[str] = None
 
     left_point: Optional[int] = None
@@ -25,7 +26,7 @@ class ESOLocateParser(LuaParser):
         cls.eso_locate = cls.get_eso_locate()
 
     @classmethod
-    def get_eso_locate(cls) -> dict:
+    def get_eso_locate(cls) -> dict[str, ESOLocate]:
         """Get 'ESOlocate' key"""
         result = {}
         default = search(cls.load_dict, 'Default')
@@ -53,5 +54,3 @@ class ESOLocateParser(LuaParser):
         cls.right_point = cls.left_point + OBJECT_WIDTH
         cls.bottom_point = cls.top_point + OBJECT_HEIGHT
         pass
-
-
