@@ -28,7 +28,7 @@ class ScreeCapture:
             )
         )
 
-        cls.segmentation()
+        # cls.segmentation()
 
     @classmethod
     def resize_xn(cls, img: Image, xn: int | list[int]) -> Image:

@@ -1,0 +1,18 @@
+# PynSource Version 1.2
+{'type':'meta', 'info1':'Lorem ipsum dolor sit amet, consectetur adipiscing elit is latin. Comments are saved.'}
+{'type':'umlshape', 'id':'AccountWide', 'x':905, 'y':506, 'width':120, 'height':186, 'attrs': '__map_for_lua|__root|centered|compassStyle|position|size|version', 'meths': '__post_init__'}
+{'type':'umlshape', 'id':'XPosition', 'x':42, 'y':166, 'width':100, 'height':96, 'attrs': 'left|mid|right', 'meths': ''}
+{'type':'umlshape', 'id':'YPosition', 'x':199, 'y':83, 'width':100, 'height':96, 'attrs': 'bottom|mid|top', 'meths': ''}
+{'type':'umlshape', 'id':'Enum', 'x':63, 'y':49, 'width':50, 'height':28, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'ESOLocate', 'x':331, 'y':252, 'width':114, 'height':186, 'attrs': '__map_for_lua|__root|sector|sector2|version|x_position|y_position', 'meths': '__post_init__'}
+{'type':'umlshape', 'id':'ESOLocateParser', 'x':558, 'y':230, 'width':160, 'height':234, 'attrs': 'bottom_point|eso_locate|left_point|lua_file_name|right_point|top_point|user', 'meths': 'get_eso_locate|get_users_list|load_data|set_user_property'}
+{'type':'umlshape', 'id':'LuaParser', 'x':684, 'y':37, 'width':114, 'height':138, 'attrs': '_root|load_dict|lua_file_name|path', 'meths': 'load_data'}
+{'type':'umlshape', 'id':'YetAnotherCompassParser', 'x':812, 'y':215, 'width':240, 'height':202, 'attrs': 'account_wide|bottom_point|left_point|lua_file_name|right_point|size|top_point', 'meths': 'get_account_wide|load_data'}
+{'type':'edge', 'id':'YPosition_to_Enum', 'source':'YPosition', 'target':'Enum', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'XPosition_to_Enum', 'source':'XPosition', 'target':'Enum', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'ESOLocateParser_to_LuaParser', 'source':'ESOLocateParser', 'target':'LuaParser', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'YetAnotherCompassParser_to_LuaParser', 'source':'YetAnotherCompassParser', 'target':'LuaParser', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'AccountWide_to_YetAnotherCompassParser', 'source':'AccountWide', 'target':'YetAnotherCompassParser', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'ESOLocate_to_ESOLocateParser', 'source':'ESOLocate', 'target':'ESOLocateParser', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'YPosition_to_ESOLocate', 'source':'YPosition', 'target':'ESOLocate', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'XPosition_to_ESOLocate', 'source':'XPosition', 'target':'ESOLocate', 'uml_edge_type': 'composition'}

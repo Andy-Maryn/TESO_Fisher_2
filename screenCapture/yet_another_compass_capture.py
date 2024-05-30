@@ -34,13 +34,13 @@ class YetAnotherCompassCapture(ScreeCapture):
         inverse_direction = range(_size - 1, 0, -1)  # for bottom
 
         direction_axes: Callable
-        direction_axes_x: Callable = lambda x, i, j: (x[i, j, 0], i, j)
-        direction_axes_y: Callable = lambda x, i, j: (x[j, i, 0], j, i)
+        direction_axes_x: Callable = lambda x, i, j: (x[i, j], i, j)
+        direction_axes_y: Callable = lambda x, i, j: (x[j, i], j, i)
 
-        left = (_to * _size) - np.sum(cls.capture[:, :_to, 0] // 255)
-        right = (_to * _size) - np.sum(cls.capture[:, _from:, 0] // 255)
-        top = (_to * _size) - np.sum(cls.capture[:_to, :, 0] // 255)
-        bottom = (_to * _size) - np.sum(cls.capture[_from:, :, 0] // 255)
+        left = (_to * _size) - np.sum(cls.capture[:, :_to] // 255)
+        right = (_to * _size) - np.sum(cls.capture[:, _from:] // 255)
+        top = (_to * _size) - np.sum(cls.capture[:_to, :] // 255)
+        bottom = (_to * _size) - np.sum(cls.capture[_from:, :] // 255)
 
         current_side = max(left, right, top, bottom)
 

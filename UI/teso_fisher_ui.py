@@ -149,6 +149,7 @@ class ButtonFrame(customtkinter.CTkFrame):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.fishing = None
         self.__class__.__button_instances.append(self)
 
         self.parent = self.master

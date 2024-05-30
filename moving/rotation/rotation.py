@@ -49,11 +49,13 @@ class Rotation:
             )
         )
     ) * 2
-    _calibrate: Callable[[float], float] = lambda degree, compas_degree: Rotation.__calibrate(compas_degree - 90 - (90 - degree))
+    _calibrate: Callable[[float], float] = lambda degree, compas_degree: Rotation.__calibrate(
+        compas_degree - degree
+    )
 
     __p2d: Callable[[float], float] = lambda x: ((x - abs(x) / x) / 0.144) + 0.15
     # __d2p: Callable[[float], float] = lambda y: (y - 0.15) * 0.144 + (abs(y) / y)
-    __d2p: Callable[[float], float] = lambda y: (y - 7.1 * (abs(y) / y)) / 6.9
+    __d2p: Callable[[float], float] = lambda y: (y - 7.1 * (abs(y) / y)) / 6.9 if y != 0 else 0
 
     # __d2p: Callable[[float], float] = lambda y: y / 0.144
 
@@ -101,7 +103,7 @@ class Rotation:
         """
 
         logger.info(f"-get_compas_direction: {YetAnotherCompassCapture.get_compas_direction()}")
-        compas_degree = 360-Rotation.get_degree((0, 0), (YetAnotherCompassCapture.get_compas_direction()))
+        compas_degree = Rotation.get_degree((0, 0), (YetAnotherCompassCapture.get_compas_direction()))
 
         logger.info(f"-compas_degree: {compas_degree}")
         logger.info(f"-degree: {degree}")
@@ -109,7 +111,7 @@ class Rotation:
         logger.info(f"-move_that_we_take: {move}")
 
         logger.info(f"-Rotation: {Rotation.__d2p(move)}")
-        Rotation.move_mouse(Rotation.__d2p(move))
+        # Rotation.move_mouse(Rotation.__d2p(move))
         return move
 
 

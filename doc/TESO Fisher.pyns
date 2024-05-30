@@ -1,0 +1,27 @@
+# PynSource Version 1.2
+{'type':'meta', 'info1':'Lorem ipsum dolor sit amet, consectetur adipiscing elit is latin. Comments are saved.'}
+{'type':'umlshape', 'id':'AccountWide', 'x':1247, 'y':22, 'width':120, 'height':186, 'attrs': '__map_for_lua|__root|centered|compassStyle|position|size|version', 'meths': '__post_init__'}
+{'type':'umlshape', 'id':'XPosition', 'x':608, 'y':77, 'width':100, 'height':96, 'attrs': 'left|mid|right', 'meths': ''}
+{'type':'umlshape', 'id':'YPosition', 'x':467, 'y':16, 'width':100, 'height':96, 'attrs': 'bottom|mid|top', 'meths': ''}
+{'type':'umlshape', 'id':'Enum', 'x':743, 'y':6, 'width':50, 'height':28, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'ESOLocate', 'x':593, 'y':303, 'width':114, 'height':186, 'attrs': '__map_for_lua|__root|sector|sector2|version|x_position|y_position', 'meths': '__post_init__'}
+{'type':'umlshape', 'id':'ESOLocateParser', 'x':747, 'y':272, 'width':160, 'height':234, 'attrs': 'bottom_point|eso_locate|left_point|lua_file_name|right_point|top_point|user', 'meths': 'get_eso_locate|get_users_list|load_data|set_user_property'}
+{'type':'umlshape', 'id':'LuaParser', 'x':747, 'y':84, 'width':114, 'height':138, 'attrs': '_root|load_dict|lua_file_name|path', 'meths': 'load_data'}
+{'type':'umlshape', 'id':'YetAnotherCompassParser', 'x':957, 'y':18, 'width':240, 'height':202, 'attrs': 'account_wide|bottom_point|left_point|lua_file_name|right_point|size|top_point', 'meths': 'get_account_wide|load_data'}
+{'type':'umlshape', 'id':'Destination', 'x':1417, 'y':17, 'width':218, 'height':218, 'attrs': '_root|adjacency_matrix|current_destination|destination_points|file_name|graph|path', 'meths': 'get_destination_point|load_data|set_next_destination_point'}
+{'type':'umlshape', 'id':'Gps', 'x':1119, 'y':281, 'width':194, 'height':154, 'attrs': 'current_position|error', 'meths': 'get_current_position|get_position|is_it_destination_point|verify_current_position'}
+{'type':'umlshape', 'id':'Walking', 'x':1373, 'y':289, 'width':80, 'height':106, 'attrs': 'hot_ket', 'meths': 'start|stop'}
+{'type':'umlshape', 'id':'Rotation', 'x':989, 'y':278, 'width':98, 'height':202, 'attrs': '__calibrate|__d2p|__p2d|_calibrate|_degree|a', 'meths': 'calibration|get_degree|move_mouse'}
+{'type':'umlshape', 'id':'ESOLocateCapture', 'x':25, 'y':273, 'width':186, 'height':138, 'attrs': 'main_color', 'meths': '__convert_image_2_text|get_cap|get_current_position|get_separate_data'}
+{'type':'umlshape', 'id':'ScreeCapture', 'x':161, 'y':32, 'width':146, 'height':202, 'attrs': 'black_color|capture|main_color|start_capture|white_color', 'meths': 'get_cap|resize_xn|segmentation|segmentation_test'}
+{'type':'umlshape', 'id':'YetAnotherCompassCapture', 'x':314, 'y':283, 'width':250, 'height':138, 'attrs': 'main_color', 'meths': 'find_point|get_cap|get_compas_direction|get_tip'}
+{'type':'edge', 'id':'YPosition_to_Enum', 'source':'YPosition', 'target':'Enum', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'XPosition_to_Enum', 'source':'XPosition', 'target':'Enum', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'ESOLocateParser_to_LuaParser', 'source':'ESOLocateParser', 'target':'LuaParser', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'YetAnotherCompassParser_to_LuaParser', 'source':'YetAnotherCompassParser', 'target':'LuaParser', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'AccountWide_to_YetAnotherCompassParser', 'source':'AccountWide', 'target':'YetAnotherCompassParser', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'ESOLocate_to_ESOLocateParser', 'source':'ESOLocate', 'target':'ESOLocateParser', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'YPosition_to_ESOLocate', 'source':'YPosition', 'target':'ESOLocate', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'XPosition_to_ESOLocate', 'source':'XPosition', 'target':'ESOLocate', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'ESOLocateCapture_to_ScreeCapture', 'source':'ESOLocateCapture', 'target':'ScreeCapture', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'YetAnotherCompassCapture_to_ScreeCapture', 'source':'YetAnotherCompassCapture', 'target':'ScreeCapture', 'uml_edge_type': 'generalisation'}

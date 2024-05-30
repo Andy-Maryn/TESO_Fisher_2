@@ -40,16 +40,16 @@ class TestRotation:
         assert actual_degree == expected_degree
 
     @pytest.mark.parametrize(
-        'yet_another_compass_capture, second_point_degree, expected_degree', [
-            pytest.param(Path("4730_8228.jpeg"), 110, 1, id="4730_8228.jpeg / 110 => degree: 1"),
-            pytest.param(Path("4730_8228.jpeg"), 111, 0, id="4730_8228.jpeg / 111 => tip: 0"),
-            pytest.param(Path("4730_8228.jpeg"), 112, -1, id="4730_8228.jpeg / 112 => tip: -1"),
-            pytest.param(Path("4730_8228.jpeg"), 290, -179, id="4730_8228.jpeg / 110 => degree: -179"),
-            pytest.param(Path("4730_8228.jpeg"), 291, 180, id="4730_8228.jpeg / 291 => degree: 180"),
-            pytest.param(Path("4730_8228.jpeg"), 292, 179, id="4730_8228.jpeg / 292 => degree: 179"),
-        ], indirect=['yet_another_compass_capture'])
+        'start_point_degree, second_point_degree, expected_degree', [
+            pytest.param((-75, 75), 134, 1, id="(-75, 75) / 134 => degree: 1"),
+            pytest.param((-75, 75), 135, 0, id="(-75, 75) / 135 => degree: 0"),
+            pytest.param((-75, 75), 136, -1, id="(-75, 75) / 136 => degree: -1"),
+            pytest.param((-75, 75), 314, -179, id="(-75, 75) / 110 => degree: -179"),
+            pytest.param((-75, 75), 315, -180, id="(-75, 75) / 315 => degree: 180"),
+            pytest.param((-75, 75), 316, 179, id="(-75, 75) / 292 => degree: 179"),
+        ])
     def test_calibration(self,
-                         yet_another_compass_capture: None,
+                         start_point_degree: float,
                          second_point_degree: float,
                          expected_degree: float):
         assert round(Rotation.calibration(second_point_degree)) == expected_degree

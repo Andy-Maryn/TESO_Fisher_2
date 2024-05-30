@@ -25,8 +25,17 @@ def data_path():
     Destination._root = Path(r'C:\Users\Andy\PycharmProjects\tesoFisher\matrix')
 
 
-@pytest.fixture(scope="session", autouse=True)
-def load_data(data_path):
+@pytest.fixture(scope="session")
+def load_test_data(data_path):
+    ESOLocateParser.load_data()
+    ESOLocateParser.set_user_property('BendreTolstyy')
+
+    YetAnotherCompassParser.load_data()
+
+    Destination.load_data()
+
+@pytest.fixture(scope="session")
+def load_data():
     ESOLocateParser.load_data()
     ESOLocateParser.set_user_property('BendreTolstyy')
 
