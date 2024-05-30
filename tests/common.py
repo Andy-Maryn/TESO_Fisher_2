@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 import numpy as np
@@ -17,8 +18,8 @@ ESO_LOCATE_CAPTURE_PATH = CAPTURE_PATH / Path("locate")
 
 @pytest.fixture(scope="session")
 def data_path():
-    LuaParser._root = Path(r'C:\Users\Andy\PycharmProjects\tesoFisher\tests\lua')
-    Destination._root = Path(r'C:\Users\Andy\PycharmProjects\tesoFisher\tests\matrix')
+    LuaParser._root = os.path.dirname(os.path.abspath(__file__)) / Path(r'lua')
+    Destination._root = os.path.dirname(os.path.abspath(__file__)) / Path(r'matrix')
     yield
     LuaParser._root = Path('C:/Users/Andy/Documents/Elder Scrolls Online/live/SavedVariables')
     Destination._root = Path(r'C:\Users\Andy\PycharmProjects\tesoFisher\matrix')
