@@ -6,7 +6,7 @@ import numpy as np
 
 
 class Destination:
-    _root: Path = Path(r'C:\Users\Andy\PycharmProjects\tesoFisher\matrix')
+    _root: Path = Path(__file__).resolve().parents[1] / Path(r'matrix')
     file_name: str = 'adjacency_matrix.npz'
 
     @classmethod

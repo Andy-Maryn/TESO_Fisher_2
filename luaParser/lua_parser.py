@@ -6,7 +6,7 @@ from pathlib import Path
 class LuaParser:
     """Lua Parser"""
     # TODO: path to 'Documents' folder should not be hard coded
-    _root: Path = Path('C:/Users/Andy/Documents/Elder Scrolls Online/live/SavedVariables')
+    _root: Path = Path(r'C:\Users\Andrii\Documents\Elder Scrolls Online\live\SavedVariables')
     lua_file_name: str = ''
 
     load_dict: dict

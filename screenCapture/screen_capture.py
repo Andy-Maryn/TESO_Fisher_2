@@ -1,10 +1,12 @@
 """Scree capture"""
+from pathlib import Path
 from typing import Any
 
 import numpy as np
 from PIL import ImageGrab, Image
 from numpy import ndarray, dtype
 
+ROOT: Path = Path(__file__).resolve().parents[1]
 
 class ScreeCapture:
     capture: ndarray[Any, dtype[Any]]
@@ -50,7 +52,7 @@ class ScreeCapture:
         cls.capture = new_capture
 
     @classmethod
-    def segmentation_test(cls, color_error: int = 30):
+    def segmentation_test(cls, color_error: int = 0):
         new_capture = np.zeros((cls.capture.shape[0], cls.capture.shape[1]))
         for line in range(cls.capture.shape[0]):
             for colum in range(cls.capture.shape[1]):

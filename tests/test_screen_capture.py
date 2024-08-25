@@ -1,21 +1,32 @@
 import time
 
 import pytest
+import pytest_html
 
 from tests.common import *
+from tests.conftest import base_image_array
 
 
 class TestESOLocateCapture:
-    @pytest.mark.skip
+    # @pytest.mark.skip
     @pytest.mark.parametrize(
         'eso_locate_capture, expected_location', [
-            pytest.param(Path("4715_8270.jpeg"), [47.15, 82.70], id="4715_8270.jpeg => position: [47.15, 82.70]"),
-            pytest.param(Path("4719_8287.jpeg"), [47.19, 82.87], id="4719_8287.jpeg => position: [[47.19, 82.87]"),
+            pytest.param(Path("4665_7969.jpeg"), [46.65, 79.69], id="4665_7969.jpeg => position: [46.65, 79.69]"),
+            pytest.param(Path("4673_8010.jpeg"), [46.73, 80.10], id="4673_8010.jpeg => position: [46.83, 80.10]"),
+            pytest.param(Path("4669_7987.jpeg"), [46.69, 79.87], id="4669_7987.jpeg => position: [56.69, 79.87]"),
+            pytest.param(Path("4702_8082.jpeg"), [47.02, 80.82], id="4702_8082.jpeg => position: [47.02, 80.82]]"),
         ], indirect=['eso_locate_capture']
     )
     def test_get_current_position(self,
-                                  eso_locate_capture: None,
-                                  expected_location: tuple[float, float]):
+                                  eso_locate_capture: Path,
+                                  expected_location: tuple[float, float],
+                                  load_test_data,
+                                  extras):
+        extras.append(
+            pytest_html.extras.image(
+                base_image_array(ESOLocateCapture.capture, mode='1')
+            )
+        )
         actual_position = ESOLocateCapture.get_current_position()
         assert actual_position == expected_location
 
@@ -44,4 +55,3 @@ class TestYetAnotherCompassCapture:
         os.makedirs(f"report/{folder}")
 
         Image.fromarray(YetAnotherCompassCapture.start_capture).save(os.path.dirname(os.path.abspath(__file__)) + f"/report/{folder}/compas.jpeg")
-

@@ -10,7 +10,7 @@ class TestLuaParser:
         ESOLocateParser.load_data()
         ESOLocateParser.set_user_property('BendreTolstyy')
 
-        assert list(ESOLocateParser.eso_locate.keys()) == ['VictorMartyn', 'BendreTolstyy', 'WanderingWizardMikael']
+        assert list(ESOLocateParser.eso_locate.keys()) == ['BendreTolstyy']
         assert ESOLocateParser.left_point == -67
         assert ESOLocateParser.top_point == 67
         assert ESOLocateParser.right_point == 233

@@ -60,7 +60,7 @@ class Gps:
 
 if __name__ == "__main__":
     with Image.open(
-            r'C:\Users\Andy\PycharmProjects\pyWinCoreAudio\report\20240425_211350_1714079630810\locate_.jpeg') as file:
+            r'C:\Users\Andrii\PycharmProjects\pyWinCoreAudio\report\20240425_211350_1714079630810\locate_.jpeg') as file:
         ESOLocateCapture.capture = np.asarray(file)
 
         position = ESOLocateCapture.get_current_position()
