@@ -49,7 +49,8 @@ class TestRotation:
             pytest.param((-75, 75), 316, 179, id="(-75, 75) / 292 => degree: 179"),
         ])
     def test_calibration(self,
-                         start_point_degree: float,
+                         start_point_degree: tuple[float, float],
                          second_point_degree: float,
                          expected_degree: float):
-        assert round(Rotation.calibration(second_point_degree)) == expected_degree
+        compas_degree = Rotation.get_degree((0, 0), start_point_degree)
+        assert round(Rotation._calibrate(second_point_degree, compas_degree)) == expected_degree
