@@ -16,7 +16,7 @@ from tests.conftest import base_image_path, base_image_array
 
 CAPTURE_PATH = Path(__file__).resolve().parents[1] / Path(r"tests/data_screen_capture")
 ESO_LOCATE_CAPTURE_PATH = CAPTURE_PATH / Path("locate")
-CAPTURE_PATH = Path()
+YET_ANOTHER_COMPASS_CAPTURE_PATH = CAPTURE_PATH / Path("compass")
 
 
 @pytest.fixture(scope="session")
@@ -49,8 +49,6 @@ def load_data():
 
 @pytest.fixture
 def eso_locate_capture(request, extras):
-    extras.append(pytest_html.extras.png(base_image_path(ESO_LOCATE_CAPTURE_PATH / request.param)))
-
     with Image.open(ESO_LOCATE_CAPTURE_PATH / request.param) as img:
         img.load()
     ESOLocateCapture.capture = np.array(
@@ -68,8 +66,10 @@ def eso_locate_capture(request, extras):
 
 
 @pytest.fixture
-def yet_another_compass_capture(request):
-    with Image.open(CAPTURE_PATH / request.param) as img:
+def yet_another_compass_capture(request, extras):
+    extras.append(pytest_html.extras.png(base_image_path(YET_ANOTHER_COMPASS_CAPTURE_PATH / request.param)))
+
+    with Image.open(YET_ANOTHER_COMPASS_CAPTURE_PATH / request.param) as img:
         img.load()
     YetAnotherCompassCapture.capture = np.array(
         img.crop((YetAnotherCompassParser.left_point,
@@ -77,4 +77,9 @@ def yet_another_compass_capture(request):
                   YetAnotherCompassParser.right_point,
                   YetAnotherCompassParser.bottom_point))
     )
-    YetAnotherCompassCapture.segmentation_test(25)
+    extras.append(
+        pytest_html.extras.image(
+            base_image_array(YetAnotherCompassCapture.capture, mode='RGB')
+        )
+    )
+    YetAnotherCompassCapture.segmentation_test(15)

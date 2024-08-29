@@ -3,12 +3,12 @@ import time
 import pytest
 import pytest_html
 
+from screenCapture.yet_another_compass_capture import CardinalDirections
 from tests.common import *
 from tests.conftest import base_image_array
 
 
 class TestESOLocateCapture:
-    # @pytest.mark.skip
     @pytest.mark.parametrize(
         'eso_locate_capture, expected_location', [
             pytest.param(Path("4665_7969.jpeg"), [46.65, 79.69], id="4665_7969.jpeg => position: [46.65, 79.69]"),
@@ -32,20 +32,106 @@ class TestESOLocateCapture:
 
 
 class TestYetAnotherCompassCapture:
-    @pytest.mark.skip
     @pytest.mark.parametrize(
-        'yet_another_compass_capture, expected_location', [
-            pytest.param(Path("4730_8228.jpeg"), (-21, 55), id="4730_8228.jpeg => tip: (-21, 55)"),
-            pytest.param(Path("4739_8325.jpeg"), (32, 39), id="4739_8325.jpeg => tip: (32, 39)"),
-            pytest.param(Path("4777_8315.jpeg"), (49, -18), id="4777_8315.jpeg => tip: (49, -18)"),
+        'yet_another_compass_capture, expected_cardinal_direction', [
+            pytest.param(Path("bottom_3.jpeg"), CardinalDirections.BOTTOM,
+                         id="bottom_3.jpeg => cardinal_direction: BOTTOM"),
+            pytest.param(Path("left_3.jpeg"), CardinalDirections.LEFT,
+                         id="left_3.jpeg => cardinal_direction: LEFT"),
+            pytest.param(Path("left_bottom_3.jpeg"), CardinalDirections.BOTTOM,
+                         id="left_bottom_3.jpeg => cardinal_direction: BOTTOM"),
+            pytest.param(Path("left_top_3.jpeg"), CardinalDirections.LEFT,
+                         id="left_top_3.jpeg => cardinal_direction: LEFT"),
+            pytest.param(Path("right_3.jpeg"), CardinalDirections.RIGHT,
+                         id="right_3.jpeg => cardinal_direction: RIGHT"),
+            pytest.param(Path("right_bottom_3.jpeg"), CardinalDirections.RIGHT,
+                         id="right_bottom_3.jpeg => cardinal_direction: RIGHT"),
+            pytest.param(Path("right_top_3.jpeg"), CardinalDirections.TOP,
+                         id="right_top_3.jpeg => cardinal_direction: TOP"),
+            pytest.param(Path("top_3.jpeg"), CardinalDirections.TOP,
+                         id="top_3.jpeg => cardinal_direction: TOP"),
+        ], indirect=['yet_another_compass_capture'])
+    def test_get_compas_cardinal_directions(self,
+                                            yet_another_compass_capture: Path,
+                                            expected_cardinal_direction: CardinalDirections,
+                                            load_test_data,
+                                            extras):
+        extras.append(
+            pytest_html.extras.image(
+                base_image_array(YetAnotherCompassCapture.capture, mode='1')
+            )
+        )
+        actual_cardinal_direction = YetAnotherCompassCapture.get_cardinal_directions()
+        assert actual_cardinal_direction == expected_cardinal_direction
+
+    @pytest.mark.parametrize(
+        'yet_another_compass_capture, expected_tip', [
+            pytest.param(Path("bottom_3.jpeg"), (146, 76),
+                         id="bottom_3.jpeg => tip: (146, 76)"),
+            pytest.param(Path("left_3.jpeg"), (73, 3),
+                         id="left_3.jpeg => tip: (73, 3)"),
+            pytest.param(Path("left_bottom_3.jpeg"), (127, 26),
+                         id="left_bottom_3.jpeg => tip: (127, 26)"),
+            pytest.param(Path("left_top_3.jpeg"), (35, 16),
+                         id="left_top_3.jpeg => tip: (35, 16)"),
+            pytest.param(Path("right_3.jpeg"), (75, 146),
+                         id="right_3.jpeg => tip: (75, 146)"),
+            pytest.param(Path("right_bottom_3.jpeg"), (121, 128),
+                         id="right_bottom_3.jpeg => tip: (121, 128)"),
+            pytest.param(Path("right_top_3.jpeg"), (21, 122),
+                         id="right_top_3.jpeg => tip: (21, 122)"),
+            pytest.param(Path("top_3.jpeg"), (3, 73),
+                         id="top_3.jpeg => tip: (3, 73)"),
+        ], indirect=['yet_another_compass_capture'])
+    def test_get_compas_tip(self,
+                            yet_another_compass_capture: Path,
+                            expected_tip: tuple[float, float],
+                            load_test_data,
+                            extras):
+        extras.append(
+            pytest_html.extras.image(
+                base_image_array(YetAnotherCompassCapture.capture, mode='1')
+            )
+        )
+
+        cardinal_direction = YetAnotherCompassCapture.get_cardinal_directions()
+        actual_tip = YetAnotherCompassCapture.get_tip(cardinal_direction)
+        assert actual_tip == expected_tip
+
+    @pytest.mark.parametrize(
+        'yet_another_compass_capture, expected_compas_direction', [
+            pytest.param(Path("bottom_3.jpeg"), (1, -71),
+                         id="bottom_3.jpeg => compas_direction: (1, -71)"),
+            pytest.param(Path("left_3.jpeg"), (-72, 2),
+                         id="left_3.jpeg => compas_direction: (-72, 2)"),
+            pytest.param(Path("left_bottom_3.jpeg"), (-49, -52),
+                         id="left_bottom_3.jpeg => compas_direction: (-49, -52)"),
+            pytest.param(Path("left_top_3.jpeg"), (-59, 40),
+                         id="left_top_3.jpeg => compas_direction: (-59, 40)"),
+            pytest.param(Path("right_3.jpeg"), (71, 0),
+                         id="right_3.jpeg => compas_direction: (71, 0)"),
+            pytest.param(Path("right_bottom_3.jpeg"), (53, -46),
+                         id="right_bottom_3.jpeg => compas_direction: (53, -46)"),
+            pytest.param(Path("right_top_3.jpeg"), (47, 54),
+                         id="right_top_3.jpeg => compas_direction: (47, 54)"),
+            pytest.param(Path("top_3.jpeg"), (-2, 72),
+                         id="top_3.jpeg => compas_direction: (-2, 72)"),
         ], indirect=['yet_another_compass_capture'])
     def test_get_compas_direction(self,
-                                  yet_another_compass_capture: None,
-                                  expected_location: tuple[float, float]):
-        actual_position = YetAnotherCompassCapture.get_compas_direction()
-        assert actual_position == expected_location
+                                  yet_another_compass_capture: Path,
+                                  expected_compas_direction: tuple[float, float],
+                                  load_test_data,
+                                  extras):
+        extras.append(
+            pytest_html.extras.image(
+                base_image_array(YetAnotherCompassCapture.capture, mode='1')
+            )
+        )
+        cardinal_direction = YetAnotherCompassCapture.get_cardinal_directions()
+        tip = YetAnotherCompassCapture.get_tip(cardinal_direction)
+        actual_compas_direction = YetAnotherCompassCapture.get_compas_direction(tip)
+        assert actual_compas_direction == expected_compas_direction
 
-    @pytest.mark.skip
     def test_get_compas_direction_(self, load_data):
         time.sleep(3)
         YetAnotherCompassCapture.get_cap()
@@ -54,4 +140,5 @@ class TestYetAnotherCompassCapture:
         folder = time.strftime(f"%Y%m%d_%H%M%S_{round(current_time * 1000)}", time.gmtime(current_time))
         os.makedirs(f"report/{folder}")
 
-        Image.fromarray(YetAnotherCompassCapture.start_capture).save(os.path.dirname(os.path.abspath(__file__)) + f"/report/{folder}/compas.jpeg")
+        Image.fromarray(YetAnotherCompassCapture.start_capture).save(
+            os.path.dirname(os.path.abspath(__file__)) + f"/report/{folder}/compas.jpeg")
