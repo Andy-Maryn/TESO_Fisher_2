@@ -1,8 +1,3 @@
-import time
-
-import pytest
-import pytest_html
-
 from screenCapture.yet_another_compass_capture import CardinalDirections
 from tests.common import *
 from tests.conftest import base_image_array
@@ -132,13 +127,13 @@ class TestYetAnotherCompassCapture:
         actual_compas_direction = YetAnotherCompassCapture.get_compas_direction(tip)
         assert actual_compas_direction == expected_compas_direction
 
-    def test_get_compas_direction_(self, load_data):
-        time.sleep(3)
-        YetAnotherCompassCapture.get_cap()
-
-        current_time = time.time()
-        folder = time.strftime(f"%Y%m%d_%H%M%S_{round(current_time * 1000)}", time.gmtime(current_time))
-        os.makedirs(f"report/{folder}")
-
-        Image.fromarray(YetAnotherCompassCapture.start_capture).save(
-            os.path.dirname(os.path.abspath(__file__)) + f"/report/{folder}/compas.jpeg")
+    # def test_get_compas_direction_(self, load_data):
+    #     time.sleep(3)
+    #     YetAnotherCompassCapture.get_cap()
+    #
+    #     current_time = time.time()
+    #     folder = time.strftime(f"%Y%m%d_%H%M%S_{round(current_time * 1000)}", time.gmtime(current_time))
+    #     os.makedirs(f"report/{folder}")
+    #
+    #     Image.fromarray(YetAnotherCompassCapture.start_capture).save(
+    #         os.path.dirname(os.path.abspath(__file__)) + f"/report/{folder}/compas.jpeg")
