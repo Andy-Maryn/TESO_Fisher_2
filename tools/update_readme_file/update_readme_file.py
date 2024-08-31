@@ -4,6 +4,10 @@ path = ROOT_DIR / 'doc/requirements.csv'
 with open(path, "r", encoding="utf8") as file:
     requirements = file.read()
 
+path = ROOT_DIR / 'doc/test_cases.csv'
+with open(path, "r", encoding="utf8") as file:
+    test_cases = file.read()
+
 path = ROOT_DIR / 'README.md'
 
 start = '### 3.2 Тестовая спецификация\n'
@@ -13,7 +17,7 @@ with open(path, "r", encoding="utf8") as file:
 
     star = readme.find(start) + len(start)
     end = readme.find(end, star)
-    readme = readme.replace(readme[star:end], requirements)
+    readme = readme.replace(readme[star:end], requirements + '\n' + test_cases)
 
 with open(path, "w", encoding="utf8") as file:
     file.write(readme)
