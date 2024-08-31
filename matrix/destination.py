@@ -4,9 +4,11 @@ from pathlib import Path
 import networkx as nx
 import numpy as np
 
+from definitions import ROOT_DIR
+
 
 class Destination:
-    _root: Path = Path(__file__).resolve().parents[1] / Path(r'matrix')
+    _root: Path = ROOT_DIR / Path(r'matrix')
     file_name: str = 'adjacency_matrix.npz'
 
     @classmethod

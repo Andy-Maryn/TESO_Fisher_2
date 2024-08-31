@@ -6,6 +6,7 @@ import pytest
 import pytest_html
 from PIL import Image
 
+from definitions import TEST_DIR
 from luaParser.eso_locate_parser import ESOLocateParser
 from luaParser.lua_parser import LuaParser
 from luaParser.yet_another_compass_parser import YetAnotherCompassParser
@@ -14,18 +15,18 @@ from screenCapture.eso_locate_capture import ESOLocateCapture
 from screenCapture.yet_another_compass_capture import YetAnotherCompassCapture
 from tests.conftest import base_image_path, base_image_array
 
-CAPTURE_PATH = Path(__file__).resolve().parents[1] / Path(r"tests/data_screen_capture")
-ESO_LOCATE_CAPTURE_PATH = CAPTURE_PATH / Path("locate")
-YET_ANOTHER_COMPASS_CAPTURE_PATH = CAPTURE_PATH / Path("compass")
+CAPTURE_PATH = TEST_DIR / 'data_screen_capture'
+ESO_LOCATE_CAPTURE_PATH = CAPTURE_PATH / 'locate'
+YET_ANOTHER_COMPASS_CAPTURE_PATH = CAPTURE_PATH / 'compass'
 
 
 @pytest.fixture(scope="session")
 def data_path():
-    LuaParser._root = os.path.dirname(os.path.abspath(__file__)) / Path(r'lua')
-    Destination._root = os.path.dirname(os.path.abspath(__file__)) / Path(r'matrix')
+    LuaParser._root = TEST_DIR / 'lua'
+    Destination._root = TEST_DIR / 'matrix'
     yield
     LuaParser._root = Path('C:/Users/Andrii/Documents/Elder Scrolls Online/live/SavedVariables')
-    Destination._root = Path(r'C:\Users\Andrii\PycharmProjects\tesoFisher\matrix')
+    Destination._root = Path(TEST_DIR / 'matrix')
 
 
 @pytest.fixture(scope="session")

@@ -1,27 +1,22 @@
 import base64
 import io
-from enum import Enum
 from pathlib import Path
-from typing import Any
 
 from PIL import Image
 from numpy import ndarray
 
+from tools.csv_parser.requirements_parser import Requirements, RequirementsParser
 
-class Requirements(Enum):
-    default = 'None'
-    FRS_TESO_FISHER_010101: str = ('Определить положение и размер окна ESOlocate. Данные о размере и '
-                                   'положении окна ESOlocate должны быть распарщены из соответствующего файла '
-                                   'и представлены в виде класса.')
-    FRS_TESO_FISHER_010301: str = ('Определить положение и размер окна YetAnotherCompass. Данные о размере и '
-                                   'положении окна YetAnotherCompass должны быть распарщены из соответствующего файла '
-                                   'и представлены в виде класса.')
+
+def pytest_addoption():
+    RequirementsParser.load_data()
 
 
 def pytest_runtest_setup(item):
-    for marker in item.iter_markers(name="requirement"):
-        requirement: Requirements = getattr(Requirements, marker.args[0])
-        print(requirement.name + ': ' + requirement.value)
+    for markers in item.iter_markers(name="requirement"):
+        for mark in markers.args:
+            requirement= getattr(Requirements, mark)
+            print(mark + ': ' + requirement)
 
 
 def base_image_path(path_image: Path):

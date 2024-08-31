@@ -6,7 +6,9 @@ import numpy as np
 from PIL import ImageGrab, Image
 from numpy import ndarray, dtype
 
-ROOT: Path = Path(__file__).resolve().parents[1]
+from definitions import ROOT_DIR
+
+ROOT: Path = ROOT_DIR
 
 class ScreeCapture:
     capture: ndarray[Any, dtype[Any]]

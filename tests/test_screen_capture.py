@@ -4,6 +4,7 @@ from tests.conftest import base_image_array
 
 
 class TestESOLocateCapture:
+    @pytest.mark.requirement("FRS_TESO_FISHER_010103")
     @pytest.mark.parametrize(
         'eso_locate_capture, expected_location', [
             pytest.param(Path("4665_7969.jpeg"), [46.65, 79.69], id="4665_7969.jpeg => position: [46.65, 79.69]"),
