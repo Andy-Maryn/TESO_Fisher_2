@@ -2,11 +2,14 @@ import base64
 import io
 from pathlib import Path
 
+import psutil
 from PIL import Image
 from numpy import ndarray
 
 from tools.csv_parser.requirements_parser import Requirements, RequirementsParser
 
+processes = psutil.process_iter(['pid', 'name'])
+TESO_RUNNING = True if 'eso64.exe' in [process.info['name'] for process in processes] else False
 
 def pytest_addoption():
     RequirementsParser.load_data()

@@ -20,6 +20,9 @@ logger.addHandler(ch)
 
 
 class Rotation:
+    m = 6.9005
+    b = -13.8435
+
     a = 1
     _degree: Callable[[float], float] = lambda x: math.degrees(
         math.atan(
@@ -53,11 +56,12 @@ class Rotation:
         compas_degree - degree
     )
 
-    __p2d: Callable[[float], float] = lambda x: ((x - abs(x) / x) / 0.144) + 0.15
+    # __p2d: Callable[[float], float] = lambda x: ((x - abs(x) / x) / 0.144) + 0.15
     # __d2p: Callable[[float], float] = lambda y: (y - 0.15) * 0.144 + (abs(y) / y)
-    __d2p: Callable[[float], float] = lambda y: (y - 7.1 * (abs(y) / y)) / 6.9 if y != 0 else 0
-
+    # __d2p: Callable[[float], float] = lambda y: (y - 7.1 * (abs(y) / y)) / 6.9 if y != 0 else 0
     # __d2p: Callable[[float], float] = lambda y: y / 0.144
+    _p2d: Callable[[float], float] = lambda x: (Rotation.m * x) + Rotation.b
+    _d2p: Callable[[float], float] = lambda y: (y - Rotation.b) / Rotation.m
 
     # TODO: setup duration
     @staticmethod
@@ -76,7 +80,7 @@ class Rotation:
         x -= _x
         y -= _y
 
-        get_degree: Callable[[float, float], float] = lambda _x, _y: math.degrees(math.atan(_y / _x))
+        get_degree: Callable[[float, float], float] = lambda __x, __y: math.degrees(math.atan(__y / __x))
 
         if x > 0:
             degree = get_degree(x, y)
@@ -91,7 +95,7 @@ class Rotation:
         return Rotation._degree(degree)
 
     @staticmethod
-    def calibration(degree: float) -> float:
+    def calibration(degree: float, compas_degree: float) -> int:
         """
             90 60 30                    (60+180) 240
             -30 +30
@@ -102,17 +106,19 @@ class Rotation:
         :return:
         """
 
-        logger.info(f"-get_compas_direction: {YetAnotherCompassCapture.get_compas_direction()}")
-        compas_degree = Rotation.get_degree((0, 0), (YetAnotherCompassCapture.get_compas_direction()))
+        # logger.info(f"-get_compas_direction: {YetAnotherCompassCapture.get_compas_direction()}")
+        # compas_degree = Rotation.get_degree((0, 0), (YetAnotherCompassCapture.get_compas_direction()))
 
-        logger.info(f"-compas_degree: {compas_degree}")
-        logger.info(f"-degree: {degree}")
+        # logger.info(f"-compas_degree: {compas_degree}")
+        # logger.info(f"-degree: {degree}")
+
         move = Rotation._calibrate(degree, compas_degree)
+
         logger.info(f"-move_that_we_take: {move}")
 
-        logger.info(f"-Rotation: {Rotation.__d2p(move)}")
+        # logger.info(f"-Rotation: {Rotation.__d2p(move)}")
         # Rotation.move_mouse(Rotation.__d2p(move))
-        return move
+        return Rotation._d2p(move)
 
 
 if __name__ == "__main__":

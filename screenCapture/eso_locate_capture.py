@@ -2,9 +2,11 @@
 import dataclasses
 import json
 import re
+from typing import Tuple, Any
 
 import numpy as np
 from PIL import Image
+from numpy import ndarray, dtype
 
 from luaParser.eso_locate_parser import ESOLocateParser
 from screenCapture.screen_capture import *
@@ -39,7 +41,7 @@ class ESOLocateCapture(ScreeCapture):
             convert_format_digit.append(__val)
 
     @classmethod
-    def get_cap(cls, **kwargs):
+    def get_cap(cls, **kwargs) -> ndarray[Any, dtype[Any]]:
         super().get_cap(
             point_left=ESOLocateParser.left_point,
             point_top=ESOLocateParser.top_point,
@@ -47,6 +49,7 @@ class ESOLocateCapture(ScreeCapture):
             point_bottom=ESOLocateParser.bottom_point)
 
         cls.capture = cls.capture[5:18, 110:190]
+        return cls.capture
 
     @classmethod
     def get_separate_data(cls):
@@ -85,7 +88,7 @@ class ESOLocateCapture(ScreeCapture):
         return result
 
     @classmethod
-    def get_current_position(cls) -> list[float] | None:
+    def get_current_position(cls) -> tuple[float, float]:
         """
         Return current position
         :return:
@@ -99,4 +102,4 @@ class ESOLocateCapture(ScreeCapture):
                     coord.replace(',', '.')
                 )
             )
-        return coordinates
+        return tuple(coordinates)

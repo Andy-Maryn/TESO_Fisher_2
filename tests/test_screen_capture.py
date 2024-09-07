@@ -7,10 +7,10 @@ class TestESOLocateCapture:
     @pytest.mark.requirement("FRS_TESO_FISHER_010103")
     @pytest.mark.parametrize(
         'eso_locate_capture, expected_location', [
-            pytest.param(Path("4665_7969.jpeg"), [46.65, 79.69], id="4665_7969.jpeg => position: [46.65, 79.69]"),
-            pytest.param(Path("4673_8010.jpeg"), [46.73, 80.10], id="4673_8010.jpeg => position: [46.83, 80.10]"),
-            pytest.param(Path("4669_7987.jpeg"), [46.69, 79.87], id="4669_7987.jpeg => position: [56.69, 79.87]"),
-            pytest.param(Path("4702_8082.jpeg"), [47.02, 80.82], id="4702_8082.jpeg => position: [47.02, 80.82]]"),
+            pytest.param(Path("4665_7969.jpeg"), (46.65, 79.69), id="4665_7969.jpeg => position: (46.65, 79.69)"),
+            pytest.param(Path("4673_8010.jpeg"), (46.73, 80.10), id="4673_8010.jpeg => position: (46.83, 80.10)"),
+            pytest.param(Path("4669_7987.jpeg"), (46.69, 79.87), id="4669_7987.jpeg => position: (56.69, 79.87)"),
+            pytest.param(Path("4702_8082.jpeg"), (47.02, 80.82), id="4702_8082.jpeg => position: (47.02, 80.82)]"),
         ], indirect=['eso_locate_capture']
     )
     def test_get_current_position(self,

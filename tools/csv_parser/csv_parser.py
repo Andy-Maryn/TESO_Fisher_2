@@ -22,6 +22,6 @@ class CsvParser:
     def load_data(cls) -> None:
         """Load data from .lua and convert to dictionary"""
         with open(cls.path, "r", encoding="utf8") as file:
-            reader = csv.reader(file, delimiter='|')
+            reader = csv.reader(file, delimiter="|", skipinitialspace=True)
             cls.headers = next(reader)
             cls.load_list = [dict(zip(cls.headers, row)) for row in reader]

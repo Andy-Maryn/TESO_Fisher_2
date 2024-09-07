@@ -13,6 +13,9 @@ pillow = "*"
 networkx = "*"
 matplotlib = "*"
 mouse = "*"
+pytest-expect = "*"
+pytest-check = "*"
+psutil = "*"
 
 [dev-packages]
 

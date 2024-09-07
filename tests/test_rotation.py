@@ -1,5 +1,20 @@
+import logging
+import time
+from pickle import FALSE
+
 from tests.common import *
 from moving.rotation.rotation import Rotation
+from tests.conftest import TESO_RUNNING
+
+logger = logging.getLogger('rotation.py')
+logger.setLevel(logging.DEBUG)
+ch = logging.StreamHandler()
+ch.setLevel(logging.INFO)
+
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+ch.setFormatter(formatter)
+
+logger.addHandler(ch)
 
 
 class TestRotation:
@@ -16,21 +31,21 @@ class TestRotation:
 
     @pytest.mark.parametrize(
         'start_point, destination_point, expected_degree', [
-            pytest.param((0, 0), (9, -3), 341.565, id="x=9,y =-3 => 341.565"),
-            pytest.param((0, 0), (9, 0), 360, id="x=9,y =0 => 360"),
-            pytest.param((0, 0), (9, 3), 18.435, id="x=9,y =3 => 18.435"),
+            pytest.param((0, 0), (6, -3), 330, id="x=6,y =-3 => 330"),
+            pytest.param((0, 0), (6, 0), 360, id="x=6,y =0 => 360"),
+            pytest.param((0, 0), (6, 3), 30, id="x=6,y =3 => 30"),
 
-            pytest.param((0, 0), (-3, 9), 108.435, id="x=-3,y =9 => 108.435"),
-            pytest.param((0, 0), (0, 9), 90, id="x=0,y =9 => 90"),
-            pytest.param((0, 0), (3, 9), 71.565, id="x=3,y =9 => 71.565"),
+            pytest.param((0, 0), (-3, 6), 120, id="x=-3,y =6 => 120"),
+            pytest.param((0, 0), (0, 6), 90, id="x=0,y =6 => 90"),
+            pytest.param((0, 0), (3, 6), 60, id="x=3,y =6 => 60"),
 
-            pytest.param((0, 0), (-9, -3), 198.435, id="x=-9,y =-3 => 198.435"),
-            pytest.param((0, 0), (-9, 0), 180, id="x=-9,y =0 => 180"),
-            pytest.param((0, 0), (-9, 3), 161.565, id="x=-9,y =3 => 161.565"),
+            pytest.param((0, 0), (-6, -3), 210, id="x=-6,y =-3 => 210"),
+            pytest.param((0, 0), (-6, 0), 180, id="x=-6,y =0 => 180"),
+            pytest.param((0, 0), (-6, 3), 150, id="x=-6,y =3 => 150"),
 
-            pytest.param((0, 0), (-3, -9), 251.565, id="x=-3,y =-9 => 251.565"),
-            pytest.param((0, 0), (0, -9), 270, id="x=0,y =-9 => 270"),
-            pytest.param((0, 0), (3, -9), 288.435, id="x=3,y =-9 => 288.435"),
+            pytest.param((0, 0), (-3, -6), 240, id="x=-3,y =-6 => 240"),
+            pytest.param((0, 0), (0, -6), 270, id="x=0,y =-6 => 270"),
+            pytest.param((0, 0), (3, -6), 300, id="x=3,y =-6 => 300"),
         ])
     def test_get_degree(self,
                         start_point: tuple[float, float],
@@ -40,17 +55,95 @@ class TestRotation:
         assert actual_degree == expected_degree
 
     @pytest.mark.parametrize(
-        'start_point_degree, second_point_degree, expected_degree', [
-            pytest.param((-75, 75), 134, 1, id="(-75, 75) / 134 => degree: 1"),
-            pytest.param((-75, 75), 135, 0, id="(-75, 75) / 135 => degree: 0"),
-            pytest.param((-75, 75), 136, -1, id="(-75, 75) / 136 => degree: -1"),
-            pytest.param((-75, 75), 314, -179, id="(-75, 75) / 110 => degree: -179"),
-            pytest.param((-75, 75), 315, -180, id="(-75, 75) / 315 => degree: 180"),
-            pytest.param((-75, 75), 316, 179, id="(-75, 75) / 292 => degree: 179"),
+        'degree, compas_degree, expected_degree', [
+            pytest.param(75, 0, -75, id="75 / 0 => degree: -75"),
+            pytest.param(75, 90, 15, id="75 / 90 => degree: 15"),
+            pytest.param(75, 180, 105, id="75 / 180 => degree: 105"),
+            pytest.param(75, 270, -165, id="75 / 270 => degree: -165"),
+            pytest.param(75, 360, -75, id="75 / 360 => degree: -75"),
+            pytest.param(75, 75, 0, id="75 / 75 => degree: 0"),
+            pytest.param(75, 255, 180, id="75 / 255 => degree: 180"),
         ])
     def test_calibration(self,
-                         start_point_degree: tuple[float, float],
-                         second_point_degree: float,
+                         degree: tuple[float, float],
+                         compas_degree: float,
                          expected_degree: float):
-        compas_degree = Rotation.get_degree((0, 0), start_point_degree)
-        assert round(Rotation._calibrate(second_point_degree, compas_degree)) == expected_degree
+        assert round(Rotation._calibrate(degree, compas_degree)) == expected_degree
+
+    @pytest.mark.parametrize(
+        'move', [
+            pytest.param(10, id="10=> calibration"),
+            pytest.param(-10, id="-10 => calibration"),
+            pytest.param(15, id="15 => calibration"),
+            pytest.param(-15, id="-15 => calibration"),
+            pytest.param(20, id="20 => calibration"),
+            pytest.param(-20, id="-20 => calibration"),
+            pytest.param(25, id="25 => calibration"),
+            pytest.param(-25, id="-25 => calibration"),
+            pytest.param(30, id="30 => calibration"),
+            pytest.param(-30, id="-30 => calibration"),
+            pytest.param(35, id="35 => calibration"),
+            pytest.param(-35, id="-35 => calibration"),
+            pytest.param(40, id="40 => calibration"),
+            pytest.param(-40, id="-40 => calibration"),
+        ])
+    @pytest.mark.skipif(TESO_RUNNING is not True, reason="'eso64.exe' is not running")
+    def test_calibration_runtime(self, move, load_data, screen_is_ready):
+        Rotation.move_mouse(move)
+
+        ESOLocateCapture.get_cap()
+        ESOLocateCapture.segmentation_test()
+        YetAnotherCompassCapture.get_cap()
+        YetAnotherCompassCapture.segmentation_test()
+
+        current_position = ESOLocateCapture.get_current_position()
+        destination_point = Destination.get_destination_point()[:2]
+
+        logger.info(f"-current_position: {current_position}")
+        logger.info(f"-destination_point: {destination_point}")
+
+        degree = Rotation.get_degree(current_position, destination_point)
+        logger.info(f"-degree: {degree}")
+
+        cardinal_direction = YetAnotherCompassCapture.get_cardinal_directions()
+        tip = YetAnotherCompassCapture.get_tip(cardinal_direction)
+        compas_direction = YetAnotherCompassCapture.get_compas_direction(tip)
+        compas_direction = (compas_direction[0], compas_direction[1] * (-1))
+        compas_degree = Rotation.get_degree((0, 0), compas_direction)
+        """
+        Rotation.move_mouse(calibration)
+
+        logger.info(f"-calibration: {calibration}")
+        logger.info(f"-pre_compas_degree: {degree_}")
+        logger.info(f"-cur_compas_degree: {compas_degree}")
+        logger.info(f"-different: {degree_-compas_degree}")
+        logger.info("--------------------------------------")
+        degree_ = compas_degree
+        time.sleep(1)
+        """
+
+        logger.info(f"-cur_compas_degree: {compas_degree}")
+        logger.info(f"-compas_degree-degree: {compas_degree - degree}")
+
+        calibration = Rotation.calibration(degree, compas_degree)
+        logger.info(f"-calibration: {calibration}")
+
+        Rotation.move_mouse(calibration)
+
+        YetAnotherCompassCapture.get_cap()
+        YetAnotherCompassCapture.segmentation_test()
+
+        cardinal_direction = YetAnotherCompassCapture.get_cardinal_directions()
+        tip = YetAnotherCompassCapture.get_tip(cardinal_direction)
+        compas_direction = YetAnotherCompassCapture.get_compas_direction(tip)
+        compas_direction = (compas_direction[0], compas_direction[1] * (-1))
+        compas_degree = Rotation.get_degree((0, 0), compas_direction)
+        calibration = Rotation.calibration(degree, compas_degree)
+
+        logger.info(f"-cur_compas_degree: {compas_degree}")
+        logger.info(f"-_degree: {degree}")
+
+        logger.info(f"-calibration: {calibration}")
+
+        logger.info(f"-Rotation: {calibration}")
+        assert -2 < calibration < 2

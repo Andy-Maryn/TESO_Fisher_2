@@ -1,9 +1,10 @@
-import os
+import time
 from pathlib import Path
 
 import numpy as np
 import pytest
 import pytest_html
+from pytest_check import check
 from PIL import Image
 
 from definitions import TEST_DIR
@@ -46,6 +47,34 @@ def load_data():
     YetAnotherCompassParser.load_data()
 
     Destination.load_data()
+
+@pytest.fixture
+def screen_is_ready(extras):
+    start_time = time.time()
+    current_time = time.time()
+    while current_time - start_time < 3:
+        ESOLocateCapture.get_cap()
+
+        extras.append(
+            pytest_html.extras.image(
+                base_image_array(ESOLocateCapture.capture, mode='RGB')
+            )
+        )
+
+        ESOLocateCapture.segmentation_test()
+
+        extras.append(
+            pytest_html.extras.image(
+                base_image_array(ESOLocateCapture.capture, mode='1')
+            )
+        )
+        current_position = ESOLocateCapture.get_current_position()
+        if len(current_position) == 0:
+            current_time = time.time()
+        else:
+            break
+
+
 
 
 @pytest.fixture

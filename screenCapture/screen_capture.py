@@ -54,7 +54,7 @@ class ScreeCapture:
         cls.capture = new_capture
 
     @classmethod
-    def segmentation_test(cls, color_error: int = 0):
+    def segmentation_test(cls, color_error: int = 1):
         new_capture = np.zeros((cls.capture.shape[0], cls.capture.shape[1]))
         for line in range(cls.capture.shape[0]):
             for colum in range(cls.capture.shape[1]):
