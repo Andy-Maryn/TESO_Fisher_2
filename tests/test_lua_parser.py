@@ -14,7 +14,6 @@ class TestLuaParser:
         check.equal(ESOLocateParser.right_point, 305)
         check.equal(ESOLocateParser.bottom_point, 20)
 
-    @pytest.mark.requirement("FRS_TESO_FISHER_010301")
     def test_yet_another_compass_parser(self, load_test_data):
         YetAnotherCompassParser.load_data()
 

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from tools.csv_parser.csv_parser import CsvParser
+from csvParser.csv_parser import CsvParser
 
 
 @dataclass

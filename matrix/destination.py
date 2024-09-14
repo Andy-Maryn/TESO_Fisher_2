@@ -1,21 +1,12 @@
 import random
-from pathlib import Path
 
 import networkx as nx
 import numpy as np
 
-from definitions import ROOT_DIR
+from csvParser.adjacency_matrix import AdjacencyMatrixParser
 
 
 class Destination:
-    _root: Path = ROOT_DIR / Path(r'matrix')
-    file_name: str = 'adjacency_matrix.npz'
-
-    @classmethod
-    @property
-    def path(cls) -> Path:
-        return cls._root / cls.file_name
-
     destination_points: np.array
     adjacency_matrix: np.array
 
@@ -26,8 +17,8 @@ class Destination:
     @classmethod
     def load_data(cls) -> None:
 
-        cls.destination_points = np.load(cls.path)['destination_points']
-        cls.adjacency_matrix = np.load(cls.path)['map_destination']
+        cls.destination_points = AdjacencyMatrixParser.destination_points
+        cls.adjacency_matrix = np.array(AdjacencyMatrixParser.map_destination)
 
         cls.graph = nx.DiGraph(np.matrix(cls.adjacency_matrix))
 

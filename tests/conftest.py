@@ -6,7 +6,7 @@ import psutil
 from PIL import Image
 from numpy import ndarray
 
-from tools.csv_parser.requirements_parser import Requirements, RequirementsParser
+from csvParser.requirements_parser import RequirementsParser, Requirements
 
 processes = psutil.process_iter(['pid', 'name'])
 TESO_RUNNING = True if 'eso64.exe' in [process.info['name'] for process in processes] else False

@@ -7,6 +7,7 @@ import pytest_html
 from pytest_check import check
 from PIL import Image
 
+from csvParser.adjacency_matrix import AdjacencyMatrixParser
 from definitions import TEST_DIR
 from luaParser.eso_locate_parser import ESOLocateParser
 from luaParser.lua_parser import LuaParser
@@ -24,10 +25,10 @@ YET_ANOTHER_COMPASS_CAPTURE_PATH = CAPTURE_PATH / 'compass'
 @pytest.fixture(scope="session")
 def data_path():
     LuaParser._root = TEST_DIR / 'lua'
-    Destination._root = TEST_DIR / 'matrix'
+    AdjacencyMatrixParser._root = TEST_DIR / 'matrix'
     yield
     LuaParser._root = Path('C:/Users/Andrii/Documents/Elder Scrolls Online/live/SavedVariables')
-    Destination._root = Path(TEST_DIR / 'matrix')
+    AdjacencyMatrixParser._root = TEST_DIR / 'matrix'
 
 
 @pytest.fixture(scope="session")
@@ -37,6 +38,7 @@ def load_test_data(data_path):
 
     YetAnotherCompassParser.load_data()
 
+    AdjacencyMatrixParser.load_data()
     Destination.load_data()
 
 @pytest.fixture(scope="session")
@@ -46,6 +48,7 @@ def load_data():
 
     YetAnotherCompassParser.load_data()
 
+    AdjacencyMatrixParser.load_data()
     Destination.load_data()
 
 @pytest.fixture
