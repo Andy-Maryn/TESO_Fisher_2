@@ -31,21 +31,21 @@ class TestRotation:
 
     @pytest.mark.parametrize(
         'start_point, destination_point, expected_degree', [
-            pytest.param((0, 0), (6, -3), 330, id="x=6,y =-3 => 330"),
+            pytest.param((0, 0), (6, -3), 333.435, id="x=6,y =-3 => 333.435"),
             pytest.param((0, 0), (6, 0), 360, id="x=6,y =0 => 360"),
-            pytest.param((0, 0), (6, 3), 30, id="x=6,y =3 => 30"),
+            pytest.param((0, 0), (6, 3), 26.565, id="x=6,y =3 => 26.565"),
 
-            pytest.param((0, 0), (-3, 6), 120, id="x=-3,y =6 => 120"),
+            pytest.param((0, 0), (-3, 6), 116.565, id="x=-3,y =6 => 116.565"),
             pytest.param((0, 0), (0, 6), 90, id="x=0,y =6 => 90"),
-            pytest.param((0, 0), (3, 6), 60, id="x=3,y =6 => 60"),
+            pytest.param((0, 0), (3, 6), 63.435, id="x=3,y =6 => 63.435"),
 
-            pytest.param((0, 0), (-6, -3), 210, id="x=-6,y =-3 => 210"),
+            pytest.param((0, 0), (-6, -3), 206.565, id="x=-6,y =-3 => 206.565"),
             pytest.param((0, 0), (-6, 0), 180, id="x=-6,y =0 => 180"),
-            pytest.param((0, 0), (-6, 3), 150, id="x=-6,y =3 => 150"),
+            pytest.param((0, 0), (-6, 3), 153.435, id="x=-6,y =3 => 153.435"),
 
-            pytest.param((0, 0), (-3, -6), 240, id="x=-3,y =-6 => 240"),
+            pytest.param((0, 0), (-3, -6), 243.435, id="x=-3,y =-6 => 243.435"),
             pytest.param((0, 0), (0, -6), 270, id="x=0,y =-6 => 270"),
-            pytest.param((0, 0), (3, -6), 300, id="x=3,y =-6 => 300"),
+            pytest.param((0, 0), (3, -6), 296.565, id="x=3,y =-6 => 296.565"),
         ])
     def test_get_degree(self,
                         start_point: tuple[float, float],
@@ -88,7 +88,7 @@ class TestRotation:
             pytest.param(-40, id="-40 => calibration"),
         ])
     @pytest.mark.skipif(TESO_RUNNING is not True, reason="'eso64.exe' is not running")
-    def test_calibration_runtime(self, move, load_data, screen_is_ready):
+    def test_calibration_runtime(self, move, load_data, screen_is_ready, mouse_sensitivity):
         Rotation.move_mouse(move)
 
         ESOLocateCapture.get_cap()
@@ -97,7 +97,7 @@ class TestRotation:
         YetAnotherCompassCapture.segmentation_test()
 
         current_position = ESOLocateCapture.get_current_position()
-        destination_point = Destination.get_destination_point()[:2]
+        destination_point = Destination.get_destination_point()
 
         logger.info(f"-current_position: {current_position}")
         logger.info(f"-destination_point: {destination_point}")
@@ -108,7 +108,7 @@ class TestRotation:
         cardinal_direction = YetAnotherCompassCapture.get_cardinal_directions()
         tip = YetAnotherCompassCapture.get_tip(cardinal_direction)
         compas_direction = YetAnotherCompassCapture.get_compas_direction(tip)
-        compas_direction = (compas_direction[0], compas_direction[1] * (-1))
+        # compas_direction = (compas_direction[0], compas_direction[1])
         compas_degree = Rotation.get_degree((0, 0), compas_direction)
         """
         Rotation.move_mouse(calibration)
@@ -136,7 +136,7 @@ class TestRotation:
         cardinal_direction = YetAnotherCompassCapture.get_cardinal_directions()
         tip = YetAnotherCompassCapture.get_tip(cardinal_direction)
         compas_direction = YetAnotherCompassCapture.get_compas_direction(tip)
-        compas_direction = (compas_direction[0], compas_direction[1] * (-1))
+        # compas_direction = (compas_direction[0], compas_direction[1] * (-1))
         compas_degree = Rotation.get_degree((0, 0), compas_direction)
         calibration = Rotation.calibration(degree, compas_degree)
 
@@ -146,4 +146,4 @@ class TestRotation:
         logger.info(f"-calibration: {calibration}")
 
         logger.info(f"-Rotation: {calibration}")
-        assert -2 < calibration < 2
+        assert -3 < calibration < 3

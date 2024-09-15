@@ -13,6 +13,7 @@ from luaParser.eso_locate_parser import ESOLocateParser
 from luaParser.lua_parser import LuaParser
 from luaParser.yet_another_compass_parser import YetAnotherCompassParser
 from matrix.destination import Destination
+from moving.rotation.rotation import Rotation
 from screenCapture.eso_locate_capture import ESOLocateCapture
 from screenCapture.yet_another_compass_capture import YetAnotherCompassCapture
 from tests.conftest import base_image_path, base_image_array
@@ -116,3 +117,7 @@ def yet_another_compass_capture(request, extras):
         )
     )
     YetAnotherCompassCapture.segmentation_test(15)
+
+@pytest.fixture(scope="session")
+def mouse_sensitivity():
+    Rotation.calculate_mouse_sensitivity()

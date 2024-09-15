@@ -99,6 +99,6 @@ class YetAnotherCompassCapture(ScreeCapture):
             y, x = tip
             x = x_axes(x)
             y = y_axes(y)
-            return x, y
+            return x, y * (-1)
 
         return None

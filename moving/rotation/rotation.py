@@ -4,6 +4,7 @@ import time
 from typing import Callable
 
 import mouse
+import numpy as np
 
 from luaParser.yet_another_compass_parser import YetAnotherCompassParser
 from screenCapture.yet_another_compass_capture import YetAnotherCompassCapture
@@ -62,6 +63,49 @@ class Rotation:
     # __d2p: Callable[[float], float] = lambda y: y / 0.144
     _p2d: Callable[[float], float] = lambda x: (Rotation.m * x) + Rotation.b
     _d2p: Callable[[float], float] = lambda y: (y - Rotation.b) / Rotation.m
+
+    @classmethod
+    def mouse_sensitivity(cls, x, y):
+        _a = np.vstack([x, np.ones(len(x))]).T
+        cls.m, cls.b = np.linalg.lstsq(_a, y, rcond=None)[0]
+        time.sleep(0.5)
+        logger.info(f"m = {cls.m},  b = {cls.b}")
+
+    @classmethod
+    def calculate_mouse_sensitivity(cls):
+        _x = []
+        _y = []
+
+        YetAnotherCompassCapture.get_cap()
+        YetAnotherCompassCapture.segmentation_test()
+
+        cardinal_direction = YetAnotherCompassCapture.get_cardinal_directions()
+        tip = YetAnotherCompassCapture.get_tip(cardinal_direction)
+        compas_direction = YetAnotherCompassCapture.get_compas_direction(tip)
+        start_compas_degree = Rotation.get_degree((0, 0), compas_direction)
+
+        for move in range(1, 30, 1):
+            cls.move_mouse(move)
+
+            YetAnotherCompassCapture.get_cap()
+            YetAnotherCompassCapture.segmentation_test()
+
+            cardinal_direction = YetAnotherCompassCapture.get_cardinal_directions()
+            tip = YetAnotherCompassCapture.get_tip(cardinal_direction)
+            compas_direction = YetAnotherCompassCapture.get_compas_direction(tip)
+            new_compas_degree = Rotation.get_degree((0, 0), compas_direction)
+
+            degree = abs(new_compas_degree - start_compas_degree)
+
+            logger.info(f"degree = {degree}")
+
+            if 1 < degree < 180:
+                logger.info(f"_x = {move},  _y = {degree}")
+                _x.append(move)
+                _y.append(degree)
+            start_compas_degree = new_compas_degree
+
+        cls.mouse_sensitivity(_x, _y)
 
     # TODO: setup duration
     @staticmethod
