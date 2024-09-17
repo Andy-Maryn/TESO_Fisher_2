@@ -105,6 +105,8 @@ class TestRotation:
         degree = Rotation.get_degree(current_position, destination_point)
         logger.info(f"-degree: {degree}")
 
+        degree = Rotation._x_invert_degree(degree)
+
         cardinal_direction = YetAnotherCompassCapture.get_cardinal_directions()
         tip = YetAnotherCompassCapture.get_tip(cardinal_direction)
         compas_direction = YetAnotherCompassCapture.get_compas_direction(tip)

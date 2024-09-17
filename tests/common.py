@@ -120,4 +120,5 @@ def yet_another_compass_capture(request, extras):
 
 @pytest.fixture(scope="session")
 def mouse_sensitivity():
-    Rotation.calculate_mouse_sensitivity()
+    # Rotation.calculate_mouse_sensitivity()
+    pass

@@ -21,8 +21,8 @@ logger.addHandler(ch)
 
 
 class Rotation:
-    m = 6.9005
-    b = -13.8435
+    m = 2.825
+    b = -2.795
 
     a = 1
     _degree: Callable[[float], float] = lambda x: math.degrees(
@@ -43,6 +43,8 @@ class Rotation:
     #         )
     #     )
     # ) * 2
+
+    _x_invert_degree: Callable[[float], float] = lambda x: 180 - x
 
     __calibrate: Callable[[float], float] = lambda x: math.degrees(
         math.atan(
