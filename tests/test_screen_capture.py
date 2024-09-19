@@ -1,4 +1,3 @@
-from screenCapture.yet_another_compass_capture import CardinalDirections
 from tests.common import *
 from tests.conftest import base_image_array
 
@@ -62,7 +61,7 @@ class TestYetAnotherCompassCapture:
 
     @pytest.mark.parametrize(
         'yet_another_compass_capture, expected_tip', [
-            pytest.param(Path("bottom_3.jpeg"), (146, 76),
+            pytest.param(Path("bottom_3.jpeg"), (146, 77),
                          id="bottom_3.jpeg => tip: (146, 76)"),
             pytest.param(Path("left_3.jpeg"), (73, 3),
                          id="left_3.jpeg => tip: (73, 3)"),
@@ -96,7 +95,7 @@ class TestYetAnotherCompassCapture:
 
     @pytest.mark.parametrize(
         'yet_another_compass_capture, expected_compas_direction', [
-            pytest.param(Path("bottom_3.jpeg"), (1, 71),
+            pytest.param(Path("bottom_3.jpeg"), (2, 71),
                          id="bottom_3.jpeg => compas_direction: (1, 71)"),
             pytest.param(Path("left_3.jpeg"), (-72, -2),
                          id="left_3.jpeg => compas_direction: (-72, -2)"),

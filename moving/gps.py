@@ -1,25 +1,15 @@
-import logging
 import math
 import time
 
 import numpy as np
 from PIL import Image
 
+from common import *
 from screenCapture.eso_locate_capture import ESOLocateCapture
-
-logger = logging.getLogger('gps.py')
-logger.setLevel(logging.DEBUG)
-ch = logging.StreamHandler()
-ch.setLevel(logging.INFO)
-
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-ch.setFormatter(formatter)
-
-logger.addHandler(ch)
 
 
 class Gps:
-    current_position: tuple[float, float]
+    current_position: tuple[float, float] = None
     current_destination: tuple[float, float] = None
 
     error = 0.05
@@ -55,13 +45,16 @@ class Gps:
     #     else:
     #         verify = [True, True]
     #     return all(verify) is True
+    @classmethod
+    def get_distance(cls):
+        return math.hypot(cls.current_destination[0] - cls.current_position[0],
+                          cls.current_destination[1] - cls.current_position[1])
 
     @classmethod
-    def is_it_destination_point(cls):
-        distance = math.hypot(cls.current_destination[0] - cls.current_position[0],
-                              cls.current_destination[1] - cls.current_position[1])
+    def is_it_destination_point(cls, d =  0.05):
+        distance = cls.get_distance()
         logger.info(f"-distance: {distance}")
-        return distance < 0.5
+        return distance < d
 
 
 if __name__ == "__main__":

@@ -1,22 +1,17 @@
 """ESOLocate capture"""
-import dataclasses
 import json
 import re
-from typing import Tuple, Any
-
-import numpy as np
-from PIL import Image
-from numpy import ndarray, dtype
 
 from luaParser.eso_locate_parser import ESOLocateParser
 from screenCapture.screen_capture import *
+
 
 # PATTERN = r"\d{2,3}[.,]\d{2}.*?\d{2,3}[.,]\d{2}\n"
 
 
 class ESOLocateCapture(ScreeCapture):
     """Captures an image of ESOLocate coordinates"""
-    #main_color = np.array([207, 220, 189])
+    # main_color = np.array([207, 220, 189])
     main_color = np.array([0, 0, 0])
 
     _digit_size = 8
@@ -63,18 +58,18 @@ class ESOLocateCapture(ScreeCapture):
     def __convert_ndarray_2_text(cls) -> str:
         digit_matrix_list = np.split(cls.capture, cls.convert_format_digit, axis=1)
         result = ''
-        for digit_matrix in  digit_matrix_list:
+        for digit_matrix in digit_matrix_list:
             if digit_matrix.shape[1] == cls._sign_size:
-                result =  result + '.'
+                result = result + '.'
                 continue
             elif digit_matrix.shape[1] == cls._digit_size:
                 _current_rel = 0
-                sign=''
+                sign = ''
                 for key, digit in cls._digits.items():
-                    digit= np.array(digit)
+                    digit = np.array(digit)
                     digit_matrix = digit_matrix.astype(int)
                     _rel = np.sum(
-                        ((~digit_matrix & ~digit) | (digit_matrix & digit)) +2
+                        ((~digit_matrix & ~digit) | (digit_matrix & digit)) + 2
                     )
                     if _rel > 100:
                         sign = key
@@ -84,7 +79,7 @@ class ESOLocateCapture(ScreeCapture):
                         sign = key
             else:
                 continue
-            result =  result + sign
+            result = result + sign
         return result
 
     @classmethod

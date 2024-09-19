@@ -1,4 +1,3 @@
-import logging
 import math
 import time
 from typing import Callable
@@ -6,18 +5,10 @@ from typing import Callable
 import mouse
 import numpy as np
 
+from common import *
 from luaParser.yet_another_compass_parser import YetAnotherCompassParser
+from screenCapture.eso_locate_capture import ESOLocateCapture
 from screenCapture.yet_another_compass_capture import YetAnotherCompassCapture
-
-logger = logging.getLogger('rotation.py')
-logger.setLevel(logging.DEBUG)
-ch = logging.StreamHandler()
-ch.setLevel(logging.INFO)
-
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-ch.setFormatter(formatter)
-
-logger.addHandler(ch)
 
 
 class Rotation:
@@ -44,7 +35,7 @@ class Rotation:
     #     )
     # ) * 2
 
-    _x_invert_degree: Callable[[float], float] = lambda x: 180 - x
+    x_invert_degree: Callable[[float], float] = lambda x: 180 - x
 
     __calibrate: Callable[[float], float] = lambda x: math.degrees(
         math.atan(
@@ -59,11 +50,7 @@ class Rotation:
         compas_degree - degree
     )
 
-    # __p2d: Callable[[float], float] = lambda x: ((x - abs(x) / x) / 0.144) + 0.15
-    # __d2p: Callable[[float], float] = lambda y: (y - 0.15) * 0.144 + (abs(y) / y)
-    # __d2p: Callable[[float], float] = lambda y: (y - 7.1 * (abs(y) / y)) / 6.9 if y != 0 else 0
-    # __d2p: Callable[[float], float] = lambda y: y / 0.144
-    _p2d: Callable[[float], float] = lambda x: (Rotation.m * x) + Rotation.b
+    p2d: Callable[[float], float] = lambda x: (Rotation.m * x) + Rotation.b
     _d2p: Callable[[float], float] = lambda y: (y - Rotation.b) / Rotation.m
 
     @classmethod
@@ -79,7 +66,7 @@ class Rotation:
         _y = []
 
         YetAnotherCompassCapture.get_cap()
-        YetAnotherCompassCapture.segmentation_test()
+        YetAnotherCompassCapture.segmentation()
 
         cardinal_direction = YetAnotherCompassCapture.get_cardinal_directions()
         tip = YetAnotherCompassCapture.get_tip(cardinal_direction)
@@ -90,7 +77,7 @@ class Rotation:
             cls.move_mouse(move)
 
             YetAnotherCompassCapture.get_cap()
-            YetAnotherCompassCapture.segmentation_test()
+            YetAnotherCompassCapture.segmentation()
 
             cardinal_direction = YetAnotherCompassCapture.get_cardinal_directions()
             tip = YetAnotherCompassCapture.get_tip(cardinal_direction)
@@ -151,19 +138,8 @@ class Rotation:
         :param degree:
         :return:
         """
-
-        # logger.info(f"-get_compas_direction: {YetAnotherCompassCapture.get_compas_direction()}")
-        # compas_degree = Rotation.get_degree((0, 0), (YetAnotherCompassCapture.get_compas_direction()))
-
-        # logger.info(f"-compas_degree: {compas_degree}")
-        # logger.info(f"-degree: {degree}")
-
         move = Rotation._calibrate(degree, compas_degree)
-
         logger.info(f"-move_that_we_take: {move}")
-
-        # logger.info(f"-Rotation: {Rotation.__d2p(move)}")
-        # Rotation.move_mouse(Rotation.__d2p(move))
         return Rotation._d2p(move)
 
 

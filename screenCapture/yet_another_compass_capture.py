@@ -1,12 +1,11 @@
 from enum import Enum
-from importlib.resources import read_text
 from typing import Callable
 
 import numpy as np
-from PIL import Image, ImageFilter
 
 from luaParser.yet_another_compass_parser import YetAnotherCompassParser
 from screenCapture.screen_capture import ScreeCapture
+
 
 class CardinalDirections(Enum):
     LEFT = 'left'
@@ -14,8 +13,9 @@ class CardinalDirections(Enum):
     TOP = 'top'
     BOTTOM = 'bottom'
 
+
 class YetAnotherCompassCapture(ScreeCapture):
-    #main_color = np.array([10, 163, 48])
+    # main_color = np.array([10, 163, 48])
     main_color = np.array([0, 0, 0])
 
     @classmethod
@@ -32,11 +32,11 @@ class YetAnotherCompassCapture(ScreeCapture):
         _to = _size // 3
         _from = _size - _to
 
-        cardinal_directions: dict[int, CardinalDirections] ={
+        cardinal_directions: dict[int, CardinalDirections] = {
             np.sum(cls.capture[:, :_to]): CardinalDirections.LEFT,
             np.sum(cls.capture[:, _from:]): CardinalDirections.RIGHT,
             np.sum(cls.capture[:_to, :]): CardinalDirections.TOP,
-            np.sum(cls.capture[_from:, :]):CardinalDirections.BOTTOM
+            np.sum(cls.capture[_from:, :]): CardinalDirections.BOTTOM
         }
 
         current_side = max(cardinal_directions.keys())
@@ -90,7 +90,7 @@ class YetAnotherCompassCapture(ScreeCapture):
         150, 150 ->  75, -75
         :return:
         """
-        #cls.get_cap()
+        # cls.get_cap()
         mid_point = YetAnotherCompassParser.size // 2
         x_axes: Callable[[int], int] = lambda _x: _x - mid_point
         y_axes: Callable[[int], int] = lambda _y: mid_point - _y

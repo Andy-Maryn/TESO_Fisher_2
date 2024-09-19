@@ -10,6 +10,7 @@ from definitions import ROOT_DIR
 
 ROOT: Path = ROOT_DIR
 
+
 class ScreeCapture:
     capture: ndarray[Any, dtype[Any]]
     start_capture: ndarray[Any, dtype[Any]]
@@ -44,6 +45,7 @@ class ScreeCapture:
             height = xn[1]
         return img.resize((img.size[0] * width, img.size[1] * height))
 
+    '''
     @classmethod
     def segmentation(cls):
         new_capture = np.zeros((cls.capture.shape[0], cls.capture.shape[1]))
@@ -52,9 +54,10 @@ class ScreeCapture:
                 if np.array_equal(cls.capture[line][colum], cls.main_color):
                     new_capture[line, colum] = 1
         cls.capture = new_capture
+    '''
 
     @classmethod
-    def segmentation_test(cls, color_error: int = 1):
+    def segmentation(cls, color_error: int = 1):
         new_capture = np.zeros((cls.capture.shape[0], cls.capture.shape[1]))
         for line in range(cls.capture.shape[0]):
             for colum in range(cls.capture.shape[1]):

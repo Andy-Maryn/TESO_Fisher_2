@@ -1,20 +1,6 @@
-import logging
-import time
-from pickle import FALSE
-
+from fisherman.fisherman import Fisherman
 from tests.common import *
-from moving.rotation.rotation import Rotation
 from tests.conftest import TESO_RUNNING
-
-logger = logging.getLogger('rotation.py')
-logger.setLevel(logging.DEBUG)
-ch = logging.StreamHandler()
-ch.setLevel(logging.INFO)
-
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-ch.setFormatter(formatter)
-
-logger.addHandler(ch)
 
 
 class TestRotation:
@@ -91,61 +77,13 @@ class TestRotation:
     def test_calibration_runtime(self, move, load_data, screen_is_ready, mouse_sensitivity):
         Rotation.move_mouse(move)
 
-        ESOLocateCapture.get_cap()
-        ESOLocateCapture.segmentation_test()
-        YetAnotherCompassCapture.get_cap()
-        YetAnotherCompassCapture.segmentation_test()
+        Fisherman.set_current_position()
+        logger.info(f"-current_position: {Gps.current_position}")
 
-        current_position = ESOLocateCapture.get_current_position()
-        destination_point = Destination.get_destination_point()
+        Fisherman.set_destination_point()
+        logger.info(f"-destination_point: {Gps.current_destination}")
 
-        logger.info(f"-current_position: {current_position}")
-        logger.info(f"-destination_point: {destination_point}")
-
-        degree = Rotation.get_degree(current_position, destination_point)
-        logger.info(f"-degree: {degree}")
-
-        degree = Rotation._x_invert_degree(degree)
-
-        cardinal_direction = YetAnotherCompassCapture.get_cardinal_directions()
-        tip = YetAnotherCompassCapture.get_tip(cardinal_direction)
-        compas_direction = YetAnotherCompassCapture.get_compas_direction(tip)
-        # compas_direction = (compas_direction[0], compas_direction[1])
-        compas_degree = Rotation.get_degree((0, 0), compas_direction)
-        """
-        Rotation.move_mouse(calibration)
-
-        logger.info(f"-calibration: {calibration}")
-        logger.info(f"-pre_compas_degree: {degree_}")
-        logger.info(f"-cur_compas_degree: {compas_degree}")
-        logger.info(f"-different: {degree_-compas_degree}")
-        logger.info("--------------------------------------")
-        degree_ = compas_degree
-        time.sleep(1)
-        """
-
-        logger.info(f"-cur_compas_degree: {compas_degree}")
-        logger.info(f"-compas_degree-degree: {compas_degree - degree}")
-
-        calibration = Rotation.calibration(degree, compas_degree)
+        calibration =Fisherman.direction_of_view()
         logger.info(f"-calibration: {calibration}")
 
-        Rotation.move_mouse(calibration)
-
-        YetAnotherCompassCapture.get_cap()
-        YetAnotherCompassCapture.segmentation_test()
-
-        cardinal_direction = YetAnotherCompassCapture.get_cardinal_directions()
-        tip = YetAnotherCompassCapture.get_tip(cardinal_direction)
-        compas_direction = YetAnotherCompassCapture.get_compas_direction(tip)
-        # compas_direction = (compas_direction[0], compas_direction[1] * (-1))
-        compas_degree = Rotation.get_degree((0, 0), compas_direction)
-        calibration = Rotation.calibration(degree, compas_degree)
-
-        logger.info(f"-cur_compas_degree: {compas_degree}")
-        logger.info(f"-_degree: {degree}")
-
-        logger.info(f"-calibration: {calibration}")
-
-        logger.info(f"-Rotation: {calibration}")
         assert -3 < calibration < 3
