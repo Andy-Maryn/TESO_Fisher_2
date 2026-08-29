@@ -60,14 +60,14 @@ Scrolls Online.
 Игрок появляется в открытом мире, где ему необходимо поймать рыбу (Рисунок 1.1 Игрок в открытом мире).
 
 <p align="center">
-    <img alt="Игрок в открытом мире" src="doc/In_open_world.png" title="In_Open_World" width="600"/>
+    <img alt="Игрок в открытом мире" src="doc/images/In_open_world.png" title="In_Open_World" width="600"/>
 </p>
 <p align="center">Рисунок 1.1. Игрок в открытом мире</p>
 
 Для этого необходимо найти лунку с рыбой на карте и подойти к ней (Рисунок 1.2. Лунка с рыбой).
 
 <p align="center">
-    <img alt="Лунка с рыбой" src="doc/Fish_hole.png" title="Fish_hole" width="600"/>
+    <img alt="Лунка с рыбой" src="doc/images/Fish_hole.png" title="Fish_hole" width="600"/>
 </p> 
 <p align="center"> Рисунок 1.2. Лунка с рыбой</p>
 
@@ -75,14 +75,14 @@ Scrolls Online.
 удочку).
 
 <p align="center">
-    <img alt="Игрок забросил удочку" src="doc/Сast_a_line.png" title="Сast_a_line" width="600"/>
+    <img alt="Игрок забросил удочку" src="doc/images/Сast_a_line.png" title="Сast_a_line" width="600"/>
 </p> 
 <p align="center">Рисунок 1.3. Игрок забросил удочку</p>
 
 Сигнал поимки рыбы означает что рыбу необходимо выудить (Рисунок 1.4. Выудить рыбу с лунки).
 
 <p align="center">
-    <img alt="Выудить рыбу с лунки" src="doc/Fish_out_the_hole.png" title="Fish_out_the_hole" width="600"/>
+    <img alt="Выудить рыбу с лунки" src="doc/images/Fish_out_the_hole.png" title="Fish_out_the_hole" width="600"/>
 </p> 
 <p align="center">Рисунок 1.4. Выудить рыбу с лунки</p>
 
@@ -90,7 +90,7 @@ Scrolls Online.
 такой возможности не будет (Рисунок 1.5. Пустая лунка).
 
 <p align="center">
-    <img alt="Пустая лунка" src="doc/Empty_hole.png" title="Empty_hole" width="600"/>
+    <img alt="Пустая лунка" src="doc/images/Empty_hole.png" title="Empty_hole" width="600"/>
 </p> 
 <p align="center">Рисунок 1.5. Пустая лунка</p>
 
@@ -136,7 +136,7 @@ Scrolls Online.
 положения персонажа (Рисунок 2.1. Аддон ESOlocate).
 
 <p align="center">
-    <img alt="Аддон ESOlocate" src="doc/ESOlocate_addon.png" title="ESOlocate_addon" width="600"/>
+    <img alt="Аддон ESOlocate" src="doc/images/ESOlocate_addon.png" title="ESOlocate_addon" width="600"/>
 </p> 
 <p align="center">Рисунок 2.1. Аддон ESOlocate</p>
 
@@ -196,7 +196,7 @@ ESOlocate_SavedVars = {
 Для отображения компаса на экране используется аддон YetAnotherCompass (Рисунок 2.2. Аддон YetAnotherCompass).
 
 <p align="center">
-    <img alt="Аддон YetAnotherCompass" src="doc/YetAnotherCompass_addon.png" title="YetAnotherCompass_addon" width="300"/>
+    <img alt="Аддон YetAnotherCompass" src="doc/images/YetAnotherCompass_addon.png" title="YetAnotherCompass_addon" width="300"/>
 </p> 
 <p align="center">Рисунок 2.2. Аддон YetAnotherCompass</p>
 
@@ -311,7 +311,7 @@ YetAnotherCompassVars = {
 Основные функциональные требования можно представить в виде следующей диаграммы (Рисунок 3.1. Основной алгоритм):
 
 <p align="center">
-    <img alt="Основной алгоритм" src="doc/Block_diagram.png" title="Block_diagram" width="600"/>
+    <img alt="Основной алгоритм" src="doc/images/Block_diagram.png" title="Block_diagram" width="600"/>
 </p> 
 <p align="center">Рисунок 3.1. Основной алгоритм</p>
 
