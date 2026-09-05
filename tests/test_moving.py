@@ -74,6 +74,5 @@ class TestMoving:
             logger.info(f"-stop_Walking")
             Fisherman.direction_of_view(Gps.current_position, destination_point)
 
-
         Walking.stop()
         assert Gps.is_it_destination_point(0.15), 'Arrival point reached / Can not reach the destination'

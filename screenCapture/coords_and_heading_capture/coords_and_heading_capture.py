@@ -1,5 +1,4 @@
 """ESOLocate capture"""
-import json
 import re
 from dataclasses import dataclass
 from typing import NamedTuple
@@ -21,6 +20,7 @@ class CoordsAndHeading:
     zone_id: int
     char_heading: int
     camera_heading: int
+
 
 class Coords(NamedTuple):
     x: int
@@ -120,7 +120,8 @@ class CoordsAndHeadingCapture(ScreeCapture):
     def get_cap(cls, **kwargs) -> ndarray[Any, dtype[Any]]:
         """Capture the coordinates/heading area."""
         super().get_cap(point_left=CoordsAndHeadingParser.left_point, point_top=CoordsAndHeadingParser.top_point,
-            point_right=CoordsAndHeadingParser.right_point, point_bottom=CoordsAndHeadingParser.bottom_point)
+                        point_right=CoordsAndHeadingParser.right_point,
+                        point_bottom=CoordsAndHeadingParser.bottom_point)
 
         # cls.capture = cls.capture[5:18, 110:190]
         return cls.capture
@@ -262,7 +263,6 @@ class CoordsAndHeadingCapture(ScreeCapture):
             data.char_heading,
             data.camera_heading,
         )
-
 
     @classmethod
     def _parse_numeric_value(cls, value: str) -> int | float | None:

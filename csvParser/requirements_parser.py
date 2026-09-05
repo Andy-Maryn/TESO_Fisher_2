@@ -30,4 +30,3 @@ class RequirementsParser(CsvParser):
             description = row.get('description')
             if requirement in Requirements.__annotations__.keys():
                 setattr(Requirements, requirement, description)
-

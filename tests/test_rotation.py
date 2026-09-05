@@ -87,7 +87,7 @@ class TestRotation:
         Fisherman.set_destination_point()
         logger.info(f"-destination_point: {Gps.current_destination}")
 
-        calibration =Fisherman.direction_of_view()
+        calibration = Fisherman.direction_of_view()
         logger.info(f"-calibration: {calibration}")
 
         assert -3 < calibration < 3

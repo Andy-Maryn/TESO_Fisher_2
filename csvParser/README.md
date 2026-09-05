@@ -35,7 +35,8 @@
 
 ## `requirements_parser.py`
 
-`RequirementsParser` читает `doc/requirements.csv` и записывает описания в dataclass `Requirements` только для полей, существующих в `Requirements.__annotations__`.
+`RequirementsParser` читает `doc/requirements.csv` и записывает описания в dataclass `Requirements` только для полей,
+существующих в `Requirements.__annotations__`.
 
 ### Важное ограничение
 

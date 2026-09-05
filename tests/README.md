@@ -57,4 +57,5 @@ Runtime тесты помечены `skipif` и запускаются толь�
 
 Для keyboard/mouse/navigation нужны integration tests, которые явно помечены как требующие запущенной игры.
 
-Для будущего fishing state machine нужно добавить тесты без зависимости от реального аудиоустройства и клавиатуры — через mock/stub event source.
+Для будущего fishing state machine нужно добавить тесты без зависимости от реального аудиоустройства и клавиатуры —
+через mock/stub event source.

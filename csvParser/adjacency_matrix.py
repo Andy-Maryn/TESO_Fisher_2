@@ -11,7 +11,7 @@ class AdjacencyMatrixParser(CsvParser):
     csv_file_name: str = 'adjacency_matrix.csv'
 
     destination_points: Optional[dict[int, tuple[float, float]]] = None
-    map_destination: Optional[list[int,int]] = None
+    map_destination: Optional[list[int, int]] = None
     is_destination: Optional[dict[int, float]] = None
 
     @classmethod
@@ -30,7 +30,7 @@ class AdjacencyMatrixParser(CsvParser):
         cls.map_destination = []
         cls.is_destination = {}
         for row in cls.load_list[1:]:
-            point_count = len(row)-3
+            point_count = len(row) - 3
             map_destination = []
             index: int = int(row.get('index'))
             destination_point: tuple[float, float] = eval(row.get('destination_point'))

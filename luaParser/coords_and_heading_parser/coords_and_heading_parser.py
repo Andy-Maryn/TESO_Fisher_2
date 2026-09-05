@@ -23,7 +23,7 @@ class CoordsAndHeadingParser(LuaParser):
         cls.account_wide = cls.get_account_wide()
 
         cls.left_point, cls.top_point = coords_capture(cls.account_wide.off_set_x, cls.account_wide.off_set_y,
-            cls.account_wide.point, cls.account_wide.relative_point)
+                                                       cls.account_wide.point, cls.account_wide.relative_point)
         cls.right_point = cls.left_point + OBJECT_WIDTH
         cls.bottom_point = cls.top_point + OBJECT_HEIGHT
 

@@ -55,6 +55,7 @@ def anchor_position(point: int) -> tuple[int, int]:
     normalize = lambda x: x % 9
     return normalize(point) % 3, normalize(point) // 3
 
+
 def coords_capture(dx: int, dy: int, point, relative_point) -> tuple[int, int]:
     point_x, point_y = anchor_position(point)
     relative_point_x, relative_point_y = anchor_position(relative_point)

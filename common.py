@@ -1,5 +1,4 @@
 import logging
-from definitions import TEST_DIR
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)

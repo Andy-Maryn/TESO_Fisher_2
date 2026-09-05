@@ -42,7 +42,8 @@ python teso_fisher_main.py
 
 ## Жизненный цикл STOP
 
-`press_button_stop()` проходит по `Fisher.instances`, вызывает `terminate()`, удаляет процесс из списка и переключает UI.
+`press_button_stop()` проходит по `Fisher.instances`, вызывает `terminate()`, удаляет процесс из списка и переключает
+UI.
 
 ### Что важно помнить
 
@@ -58,15 +59,18 @@ python teso_fisher_main.py
 
 Диапазон: `0..100`.
 
-Изменить значение можно как slider'ом, так и вручную через Entry. Enter вызывает `set_slider()` и ограничивает значение диапазоном.
+Изменить значение можно как slider'ом, так и вручную через Entry. Enter вызывает `set_slider()` и ограничивает значение
+диапазоном.
 
 ## `ComboBoxFrame`
 
-Получает список render endpoints через `get_list_of_devices()`. Устройство `DEVICE_NAME` принудительно перемещается в начало списка.
+Получает список render endpoints через `get_list_of_devices()`. Устройство `DEVICE_NAME` принудительно перемещается в
+начало списка.
 
 ## Дополнительное окно
 
-`Toplevel` создаётся кнопкой `->`. Оно содержит отдельный `ButtonFrame`, но использует parent главного окна для устройства и threshold.
+`Toplevel` создаётся кнопкой `->`. Оно содержит отдельный `ButtonFrame`, но использует parent главного окна для
+устройства и threshold.
 
 ## Зависимости
 

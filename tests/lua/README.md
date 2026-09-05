@@ -13,4 +13,5 @@
 
 ## Связь с production
 
-В production `LuaParser._root` указывает на системный каталог SavedVariables. В тестах `conftest.py` временно переключает root на эту директорию.
+В production `LuaParser._root` указывает на системный каталог SavedVariables. В тестах `conftest.py` временно
+переключает root на эту директорию.

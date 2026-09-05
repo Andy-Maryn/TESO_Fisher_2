@@ -4,11 +4,11 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-future="0.18.3"
-customtkinter="5.2.1"
-numpy="2.1.0"
-pytest="8.3.2"
-keyboard="0.13.5"
+future = "0.18.3"
+customtkinter = "5.2.1"
+numpy = "2.1.0"
+pytest = "8.3.2"
+keyboard = "0.13.5"
 pillow = "*"
 networkx = "*"
 matplotlib = "*"

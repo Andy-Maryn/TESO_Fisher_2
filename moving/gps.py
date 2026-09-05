@@ -51,7 +51,7 @@ class Gps:
                           cls.current_destination[1] - cls.current_position[1])
 
     @classmethod
-    def is_it_destination_point(cls, d =  0.05):
+    def is_it_destination_point(cls, d=0.05):
         distance = cls.get_distance()
         logger.info(f"-distance: {distance}")
         return distance < d

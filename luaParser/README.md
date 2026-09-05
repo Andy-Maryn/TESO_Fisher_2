@@ -4,7 +4,8 @@
 
 ## Назначение
 
-Парсинг `SavedVariables` аддонов TESO. Код не парсит Lua полноценным Lua-интерпретатором: он выполняет ограниченное текстовое преобразование Lua-подобной структуры в JSON, после чего использует `json.loads()`.
+Парсинг `SavedVariables` аддонов TESO. Код не парсит Lua полноценным Lua-интерпретатором: он выполняет ограниченное
+текстовое преобразование Lua-подобной структуры в JSON, после чего использует `json.loads()`.
 
 ## `lua_parser.py`
 
@@ -64,7 +65,8 @@ Dataclass `ESOLocate` содержит:
 
 `get_eso_locate()` ищет ветку `Default`, затем первого account/user и строит словарь `character -> ESOLocate`.
 
-`set_user_property(user)` выбирает персонажа и вычисляет `left/top/right/bottom` окна ESOlocate через `eso_coordinate_to_screen_position()`.
+`set_user_property(user)` выбирает персонажа и вычисляет `left/top/right/bottom` окна ESOlocate через
+`eso_coordinate_to_screen_position()`.
 
 ## `account_wide.py`
 
@@ -72,7 +74,8 @@ Dataclass `AccountWide` описывает общую конфигурацию Y
 
 ## `yet_another_compass_parser.py`
 
-`YetAnotherCompassParser` читает `YetAnotherCompass.lua`, получает `AccountWide`, затем рассчитывает границы квадратного окна компаса:
+`YetAnotherCompassParser` читает `YetAnotherCompass.lua`, получает `AccountWide`, затем рассчитывает границы квадратного
+окна компаса:
 
 ```text
 left = x
@@ -83,4 +86,5 @@ bottom = y + size
 
 ## Тестовое переключение источника
 
-`tests/conftest.py` временно меняет `LuaParser._root` на `tests/lua/`, поэтому тесты используют fixture-файлы, а не реальный SavedVariables каталог пользователя.
+`tests/conftest.py` временно меняет `LuaParser._root` на `tests/lua/`, поэтому тесты используют fixture-файлы, а не
+реальный SavedVariables каталог пользователя.

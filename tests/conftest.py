@@ -10,9 +10,10 @@ import pytest_html
 from PIL import Image
 from numpy import ndarray
 
+
 from csvParser.adjacency_matrix import AdjacencyMatrixParser
 from csvParser.requirements_parser import RequirementsParser, Requirements
-from common import TEST_DIR
+from definitions import TEST_DIR
 from luaParser.coords_and_heading_parser.coords_and_heading_parser import CoordsAndHeadingParser
 from luaParser.lua_parser import LuaParser
 from matrix.destination import Destination
@@ -23,6 +24,7 @@ from tests.common import COORDS_AND_HEADING_CAPTURE
 processes = psutil.process_iter(['pid', 'name'])
 TESO_RUNNING = True if 'eso64.exe' in [process.info['name'] for process in processes] else False
 
+
 def pytest_addoption():
     RequirementsParser.load_data()
 
@@ -30,7 +32,7 @@ def pytest_addoption():
 def pytest_runtest_setup(item):
     for markers in item.iter_markers(name="requirement"):
         for mark in markers.args:
-            requirement= getattr(Requirements, mark)
+            requirement = getattr(Requirements, mark)
             print(mark + ': ' + requirement)
 
 
@@ -59,6 +61,7 @@ def base_image_array(path_image: ndarray, mode: str):
     img_byte_arr = img_byte_arr.getvalue()
     base64_bytes = base64.b64encode(img_byte_arr)
     return base64_bytes.decode()
+
 
 @pytest.fixture(scope="session")
 def data_path():

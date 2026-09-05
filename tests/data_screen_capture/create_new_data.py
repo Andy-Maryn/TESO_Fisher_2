@@ -1,8 +1,6 @@
 import time
 
 from PIL import ImageGrab
-import datetime
-
 
 while True:
     time.sleep(1)

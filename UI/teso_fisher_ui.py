@@ -184,7 +184,7 @@ class ButtonFrame(customtkinter.CTkFrame):
         self.min_pv = float(self.parent.slider_progressbar_frame.text_var.get()) / 100
 
         LabelFrame.write(f"device - {self.device.name}\n"
-              f"sensitive - {self.min_pv}")
+                         f"sensitive - {self.min_pv}")
 
         self.fishing = Fisher(args=(peak_value, self.min_pv, self.device.name), daemon=True)
         self.fishing.start()
@@ -266,6 +266,7 @@ class LabelFrame(customtkinter.CTkFrame):
 
             # sys.stdout = TextWrapper(self.text_box)
             # sys.stdin = TextWrapper(self.text_box)
+
     @classmethod
     def write(cls, text: str):
         text_box = cls.__instance.text_box

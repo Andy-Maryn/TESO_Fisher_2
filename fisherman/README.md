@@ -22,7 +22,8 @@
 
 ### `set_destination_point()`
 
-Если destination не передан, вызывает `Destination.get_destination_point()`. Результат записывается в `Gps.current_destination`.
+Если destination не передан, вызывает `Destination.get_destination_point()`. Результат записывается в
+`Gps.current_destination`.
 
 ### `update_current_position()`
 

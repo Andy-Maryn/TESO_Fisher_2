@@ -4,7 +4,6 @@ import time
 from typing import Any
 
 import keyboard
-
 import pyWinCoreAudio
 
 logger = logging.getLogger('teso_fisher_console.py')
