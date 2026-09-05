@@ -16,11 +16,19 @@ class Destination:
 
     @classmethod
     def load_data(cls) -> None:
+        if AdjacencyMatrixParser.map_destination is None:
+            AdjacencyMatrixParser.load_data()
 
         cls.destination_points = AdjacencyMatrixParser.destination_points
-        cls.adjacency_matrix = np.array(AdjacencyMatrixParser.map_destination)
+        cls.adjacency_matrix = np.asarray(
+            AdjacencyMatrixParser.map_destination,
+            dtype=int
+        )
 
-        cls.graph = nx.DiGraph(np.matrix(cls.adjacency_matrix))
+        cls.graph = nx.from_numpy_array(
+            cls.adjacency_matrix,
+            create_using=nx.DiGraph
+        )
 
     @classmethod
     def get_destination_point(cls):
