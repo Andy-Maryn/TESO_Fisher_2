@@ -49,6 +49,6 @@ class Fisherman:
         compas_degree = Fisherman.update_current_heading()
         calibration = Rotation.calibration(degree, compas_degree)
 
-        if -5 > Rotation.p2d(calibration) > 5:
+        if -5 < Rotation.p2d(calibration) < 5:
             Rotation.move_mouse(calibration)
         return calibration

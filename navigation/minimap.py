@@ -98,20 +98,6 @@ class NavigationResult:
         return math.degrees(math.atan2(dx, -dy))
 
 
-class MinimapCapture:
-    """Capture the configured minimap directly from the desktop."""
-
-    def __init__(self, config: MinimapConfig | None = None) -> None:
-        self.config = config or MinimapConfig()
-
-    def capture(self) -> np.ndarray:
-        region = self.config.region
-        image = ImageGrab.grab(
-            bbox=(region.left, region.top, region.right, region.bottom)
-        ).convert("RGB")
-        return np.asarray(image)
-
-
 class MinimapAnalyzer:
     """Detect map semantics using deterministic OpenCV processing."""
 

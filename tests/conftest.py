@@ -3,6 +3,7 @@ import io
 import time
 from pathlib import Path
 
+import cv2
 import numpy as np
 import psutil
 import pytest
@@ -19,7 +20,8 @@ from luaParser.lua_parser import LuaParser
 from matrix.destination import Destination
 from moving.rotation.rotation import Rotation
 from screenCapture.coords_and_heading_capture.coords_and_heading_capture import CoordsAndHeadingCapture
-from tests.common import COORDS_AND_HEADING_CAPTURE
+from screenCapture.minimap_carture.minimap_capture import MinimapCapture
+from tests.common import COORDS_AND_HEADING_CAPTURE, MINIMAP_PATH
 
 processes = psutil.process_iter(['pid', 'name'])
 TESO_RUNNING = True if 'eso64.exe' in [process.info['name'] for process in processes] else False
@@ -144,3 +146,17 @@ def mouse_sensitivity():
 def reset():
     Destination.current_destination = 0
     Destination.load_data()
+
+@pytest.fixture
+def minimap_image(request, extras):
+    with Image.open(MINIMAP_PATH / request.param) as img:
+        img.load()
+
+    MinimapCapture.capture = np.array(
+        img.crop((1640, 0, 1920, 280))
+    )
+    extras.append(
+        pytest_html.extras.image(
+            base_image_array(MinimapCapture.capture, mode='RGB')
+        )
+    )
