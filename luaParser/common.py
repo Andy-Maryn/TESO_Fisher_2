@@ -8,8 +8,8 @@ user32.SetProcessDPIAware()
 WIDTH_SCREEN = user32.GetSystemMetrics(0)
 HEIGHT_SCREEN = user32.GetSystemMetrics(1)
 
-OBJECT_WIDTH = 300
-OBJECT_HEIGHT = 20
+OBJECT_WIDTH = 180
+OBJECT_HEIGHT = 180
 
 TOP_BOARDS = 0
 BOTTOM_BOARDS = 10
@@ -31,24 +31,37 @@ class YPosition(Enum):
     mid: Callable[[int], int] = lambda y: y + (HEIGHT_SCREEN // 2) - (OBJECT_HEIGHT // 2)
 
 
-def eso_coordinate_to_screen_position(sector) -> Callable[[int, int], tuple[int, int]]:
-    """Convert EsoLocate coordinates to window coordinates"""
-    switch: dict = {
-        0: lambda x, y: (XPosition.left(x), YPosition.top(y)),
-        1: lambda x, y: (XPosition.mid(x), YPosition.top(y)),
-        2: lambda x, y: (XPosition.left(x), YPosition.mid(y)),
-        3: lambda x, y: (XPosition.left(x), YPosition.top(y)),
-        4: lambda x, y: (XPosition.mid(x), YPosition.bottom(y)),
-        5: lambda x, y: (XPosition.left(x), YPosition.top(y)),
-        6: lambda x, y: (XPosition.left(x), YPosition.bottom(y)),
-        7: lambda x, y: (XPosition.left(x), YPosition.top(y)),
-        8: lambda x, y: (XPosition.right(x), YPosition.mid(y)),
-        9: lambda x, y: (XPosition.right(x), YPosition.top(y)),
-        10: lambda x, y: (XPosition.left(x), YPosition.top(y)),
-        11: lambda x, y: (XPosition.left(x), YPosition.top(y)),
-        12: lambda x, y: (XPosition.right(x), YPosition.bottom(y)),
-    }
-    return switch.get(sector)
+# def eso_coordinate_to_screen_position(sector) -> Callable[[int, int], tuple[int, int]]:
+#     """Convert EsoLocate coordinates to window coordinates"""
+#     switch: dict = {
+#         0: lambda x, y: (XPosition.left(x), YPosition.top(y)),
+#         1: lambda x, y: (XPosition.mid(x), YPosition.top(y)),
+#         2: lambda x, y: (XPosition.left(x), YPosition.mid(y)),
+#         3: lambda x, y: (XPosition.left(x), YPosition.top(y)),
+#         4: lambda x, y: (XPosition.mid(x), YPosition.bottom(y)),
+#         5: lambda x, y: (XPosition.left(x), YPosition.top(y)),
+#         6: lambda x, y: (XPosition.left(x), YPosition.bottom(y)),
+#         7: lambda x, y: (XPosition.left(x), YPosition.top(y)),
+#         8: lambda x, y: (XPosition.right(x), YPosition.mid(y)),
+#         9: lambda x, y: (XPosition.right(x), YPosition.top(y)),
+#         10: lambda x, y: (XPosition.left(x), YPosition.top(y)),
+#         11: lambda x, y: (XPosition.left(x), YPosition.top(y)),
+#         12: lambda x, y: (XPosition.right(x), YPosition.bottom(y)),
+#     }
+#     return switch.get(sector)
+
+def anchor_position(point: int) -> tuple[int, int]:
+    """Anchor position"""
+    normalize = lambda x: x % 9
+    return normalize(point) % 3, normalize(point) // 3
+
+def coords_capture(dx: int, dy: int, point, relative_point) -> tuple[int, int]:
+    point_x, point_y = anchor_position(point)
+    relative_point_x, relative_point_y = anchor_position(relative_point)
+
+    x = (relative_point_x / 2) * WIDTH_SCREEN + dx - (point_x / 2) * WIDTH_SCREEN
+    y = (relative_point_y / 2) * HEIGHT_SCREEN + dy - (point_y / 2) * HEIGHT_SCREEN
+    return x, y
 
 
 def search(data: dict, lua_property: str, result: dict = None) -> dict | None:

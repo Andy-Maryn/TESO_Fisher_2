@@ -1,8 +1,7 @@
 from matrix.destination import Destination
 from moving.gps import Gps
 from moving.rotation.rotation import Rotation
-from screenCapture.eso_locate_capture import ESOLocateCapture
-from screenCapture.yet_another_compass_capture import YetAnotherCompassCapture
+from screenCapture.coords_and_heading_capture.coords_and_heading_capture import CoordsAndHeadingCapture
 
 
 class Fisherman:
@@ -18,21 +17,21 @@ class Fisherman:
 
     @staticmethod
     def update_current_position() -> tuple[float, float]:
-        ESOLocateCapture.get_cap()
-        ESOLocateCapture.segmentation()
+        CoordsAndHeadingCapture.get_cap()
+        CoordsAndHeadingCapture.segmentation()
 
-        return ESOLocateCapture.get_current_position()
+        coords = CoordsAndHeadingCapture.get_coords()
+
+        return coords.x, coords.y
 
     @staticmethod
-    def update_current_compas_direction() -> float:
-        YetAnotherCompassCapture.get_cap()
-        YetAnotherCompassCapture.segmentation()
+    def update_current_heading() -> float:
+        CoordsAndHeadingCapture.get_cap()
+        CoordsAndHeadingCapture.segmentation()
 
-        cardinal_direction = YetAnotherCompassCapture.get_cardinal_directions()
-        tip = YetAnotherCompassCapture.get_tip(cardinal_direction)
-        compas_direction = YetAnotherCompassCapture.get_compas_direction(tip)
+        heading = CoordsAndHeadingCapture.get_heading()
 
-        return Rotation.get_degree((0, 0), compas_direction)
+        return heading.camera_heading
 
     @staticmethod
     def direction_of_view(current_point: tuple[float, float] = None,
@@ -43,11 +42,11 @@ class Fisherman:
         degree = Rotation.get_degree(current_position, destination_point)
         degree = Rotation.x_invert_degree(degree)
 
-        compas_degree = Fisherman.update_current_compas_direction()
+        compas_degree = Fisherman.update_current_heading()
         calibration = Rotation.calibration(degree, compas_degree)
         Rotation.move_mouse(calibration)
 
-        compas_degree = Fisherman.update_current_compas_direction()
+        compas_degree = Fisherman.update_current_heading()
         calibration = Rotation.calibration(degree, compas_degree)
 
         if -5 > Rotation.p2d(calibration) > 5:

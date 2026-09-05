@@ -3,7 +3,7 @@ from typing import Callable
 
 import numpy as np
 
-from luaParser.yet_another_compass_parser import YetAnotherCompassParser
+from luaParser.yet_another_compass_old.yet_another_compass_parser import YetAnotherCompassParser
 from screenCapture.screen_capture import ScreeCapture
 
 

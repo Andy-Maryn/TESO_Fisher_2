@@ -2,9 +2,9 @@
 from collections.abc import KeysView
 from typing import Optional
 
-from luaParser.common import search, eso_coordinate_to_screen_position, OBJECT_WIDTH, OBJECT_HEIGHT
+from luaParser.common import search, OBJECT_WIDTH, OBJECT_HEIGHT
 from luaParser.lua_parser import LuaParser
-from luaParser.eso_locate import ESOLocate
+from luaParser.eso_locate_old.eso_locate import ESOLocate
 
 
 # noinspection SpellCheckingInspection

@@ -1,4 +1,5 @@
-from tests.common import *
+import pytest
+from moving.gps import Gps
 
 
 class TestGPS:

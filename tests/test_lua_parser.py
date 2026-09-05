@@ -1,23 +1,14 @@
-from tests.common import *
+import pytest
+from pytest_check import check
+
+from luaParser.coords_and_heading_parser.coords_and_heading_parser import CoordsAndHeadingParser
 
 
 class TestLuaParser:
 
     @pytest.mark.requirement("FRS_TESO_FISHER_010101")
-    def test_eso_locate_parser(self, load_test_data):
-        ESOLocateParser.load_data()
-        ESOLocateParser.set_user_property('BendreTolstyy')
+    def test_coords_and_heading_parser(self, load_test_data):
+        CoordsAndHeadingParser.load_data()
 
-        check.equal(list(ESOLocateParser.eso_locate.keys()), ['BendreTolstyy'])
-        check.equal(ESOLocateParser.left_point, 5)
-        check.equal(ESOLocateParser.top_point, 0)
-        check.equal(ESOLocateParser.right_point, 305)
-        check.equal(ESOLocateParser.bottom_point, 20)
-
-    def test_yet_another_compass_parser(self, load_test_data):
-        YetAnotherCompassParser.load_data()
-
-        check.equal(YetAnotherCompassParser.left_point, 238)
-        check.equal(YetAnotherCompassParser.top_point, 90)
-        check.equal(YetAnotherCompassParser.right_point, 388)
-        check.equal(YetAnotherCompassParser.bottom_point, 240)
+        check.equal(CoordsAndHeadingParser.left_point, 0)
+        check.equal(CoordsAndHeadingParser.top_point, 0)

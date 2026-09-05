@@ -5,10 +5,9 @@ from typing import Callable
 import mouse
 import numpy as np
 
-from common import *
-from luaParser.yet_another_compass_parser import YetAnotherCompassParser
-from screenCapture.eso_locate_capture import ESOLocateCapture
-from screenCapture.yet_another_compass_capture import YetAnotherCompassCapture
+from common import logger
+from luaParser.coords_and_heading_parser.coords_and_heading_parser import CoordsAndHeadingParser
+from screenCapture.coords_and_heading_capture.coords_and_heading_capture import CoordsAndHeadingCapture
 
 
 class Rotation:
@@ -65,24 +64,16 @@ class Rotation:
         _x = []
         _y = []
 
-        YetAnotherCompassCapture.get_cap()
-        YetAnotherCompassCapture.segmentation()
-
-        cardinal_direction = YetAnotherCompassCapture.get_cardinal_directions()
-        tip = YetAnotherCompassCapture.get_tip(cardinal_direction)
-        compas_direction = YetAnotherCompassCapture.get_compas_direction(tip)
-        start_compas_degree = Rotation.get_degree((0, 0), compas_direction)
+        CoordsAndHeadingCapture.get_cap()
+        CoordsAndHeadingCapture.segmentation(20)
+        start_compas_degree = CoordsAndHeadingCapture.get_heading().camera_heading
 
         for move in range(1, 30, 1):
             cls.move_mouse(move)
 
-            YetAnotherCompassCapture.get_cap()
-            YetAnotherCompassCapture.segmentation()
-
-            cardinal_direction = YetAnotherCompassCapture.get_cardinal_directions()
-            tip = YetAnotherCompassCapture.get_tip(cardinal_direction)
-            compas_direction = YetAnotherCompassCapture.get_compas_direction(tip)
-            new_compas_degree = Rotation.get_degree((0, 0), compas_direction)
+            CoordsAndHeadingCapture.get_cap()
+            CoordsAndHeadingCapture.segmentation(20)
+            new_compas_degree = CoordsAndHeadingCapture.get_heading().camera_heading
 
             degree = abs(new_compas_degree - start_compas_degree)
 
@@ -144,7 +135,7 @@ class Rotation:
 
 
 if __name__ == "__main__":
-    YetAnotherCompassParser.load_data()
+    CoordsAndHeadingParser.load_data()
     time.sleep(3)
     # _duration = random.SystemRandom().uniform(0.1, 1)
     # print(_duration)
@@ -164,17 +155,15 @@ if __name__ == "__main__":
 
     # Rotation.move_mouse(10, 0, 0.5)
     # Rotation.move_mouse(-10, 0, 1)
-    YetAnotherCompassCapture.get_cap()
-    compas_direction = YetAnotherCompassCapture.get_compas_direction()
-    degree_1 = Rotation.get_degree(start_point=(0, 0), destination_point=tuple(compas_direction))
+    CoordsAndHeadingCapture.get_cap()
+    degree_1 = CoordsAndHeadingCapture.get_heading().camera_heading
     print("degree: ", degree_1)
 
     for i in range(20):
         print(f'-{i}___')
         Rotation.move_mouse(i, 0, 1)
-        YetAnotherCompassCapture.get_cap()
-        compas_direction = YetAnotherCompassCapture.get_compas_direction()
-        degree_2 = Rotation.get_degree(start_point=(0, 0), destination_point=tuple(compas_direction))
+        CoordsAndHeadingCapture.get_cap()
+        degree_2 = CoordsAndHeadingCapture.get_heading().camera_heading
         print("degree: ", degree_2)
         print("degree_1 - degree_2", degree_1 - degree_2)
         degree_1 = degree_2

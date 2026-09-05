@@ -1,5 +1,9 @@
+import pytest
+
+from common import logger
 from fisherman.fisherman import Fisherman
-from tests.common import *
+from moving.gps import Gps
+from moving.rotation.rotation import Rotation
 from tests.conftest import TESO_RUNNING
 
 

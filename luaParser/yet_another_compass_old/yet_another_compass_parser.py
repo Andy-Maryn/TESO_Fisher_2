@@ -1,7 +1,7 @@
 """YetAnotherCompass parser"""
 from typing import Optional
 
-from luaParser.account_wide import AccountWide
+from luaParser.yet_another_compass_old.account_wide import AccountWide
 from luaParser.common import search
 from luaParser.lua_parser import LuaParser
 

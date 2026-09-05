@@ -2,7 +2,7 @@
 import json
 import re
 
-from luaParser.eso_locate_parser import ESOLocateParser
+from luaParser.eso_locate_old.eso_locate_parser import ESOLocateParser
 from screenCapture.screen_capture import *
 
 

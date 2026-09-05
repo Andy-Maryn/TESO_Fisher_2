@@ -4,8 +4,8 @@ import time
 import numpy as np
 from PIL import Image
 
-from common import *
-from screenCapture.eso_locate_capture import ESOLocateCapture
+from common import logger
+from screenCapture.coords_and_heading_capture.coords_and_heading_capture import CoordsAndHeadingCapture
 
 
 class Gps:
@@ -21,10 +21,10 @@ class Gps:
         def get_position(current_time: float = time.time()):
             if current_time - start_time < wait:
                 # Get image screen
-                ESOLocateCapture.get_cap()
+                CoordsAndHeadingCapture.get_cap()
 
                 # Try to get current position
-                current_position = ESOLocateCapture.get_current_position()
+                current_position = CoordsAndHeadingCapture.get_numbers()[:2]
 
                 return current_position if current_position is not None else get_position(time.time())
             else:
@@ -60,7 +60,7 @@ class Gps:
 if __name__ == "__main__":
     with Image.open(
             r'C:\Users\Andrii\PycharmProjects\pyWinCoreAudio\report\20240425_211350_1714079630810\locate_.jpeg') as file:
-        ESOLocateCapture.capture = np.asarray(file)
+        CoordsAndHeadingCapture.capture = np.asarray(file)
 
-        position = ESOLocateCapture.get_current_position()
+        position = CoordsAndHeadingCapture.get_numbers()[:2]
         print(position)

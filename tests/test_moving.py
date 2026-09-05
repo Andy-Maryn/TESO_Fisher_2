@@ -1,5 +1,13 @@
+import time
+
+import pytest
+from pytest_check import check
+
+from common import logger
 from fisherman.fisherman import Fisherman
-from tests.common import *
+from moving.gps import Gps
+from moving.rotation.rotation import Rotation
+from moving.walking import Walking
 from tests.conftest import TESO_RUNNING
 
 

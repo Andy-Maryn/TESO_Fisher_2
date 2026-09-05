@@ -1,4 +1,6 @@
-from tests.common import *
+import pytest
+
+from matrix.destination import Destination
 
 
 class TestDestination:
