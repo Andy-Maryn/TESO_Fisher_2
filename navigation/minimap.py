@@ -42,11 +42,11 @@ class MinimapConfig:
     water_hue_max: int = 179
     water_saturation_min: int = 35
     water_value_min: int = 65
-    road_hue_max: int = 80
-    road_saturation_min: int = 20
-    road_saturation_max: int = 180
-    road_value_min: int = 100
-    road_local_contrast: int = 8
+    road_red_min: int = 195
+    road_green_min: int = 165
+    road_blue_min: int = 105
+    road_red_green_max_diff: int = 55
+    road_green_blue_min_diff: int = 20
     min_water_component_area: int = 150
     min_road_component_area: int = 12
     road_dilation: int = 2
@@ -162,40 +162,67 @@ class MinimapAnalyzer:
         return mask.astype(bool)
 
     def _detect_road(self, image_bgr: np.ndarray, water_mask: np.ndarray) -> np.ndarray:
-        hsv = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2HSV)
-        gray = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2GRAY)
-        gray = cv2.GaussianBlur(gray, (5, 5), 0)
-        local = cv2.GaussianBlur(gray, (21, 21), 0)
-        contrast = gray.astype(np.int16) - local.astype(np.int16)
+        """Detect ESO road strokes using their characteristic light/warm color.
 
-        hsv_mask = (
-            (hsv[..., 0] <= self.config.road_hue_max)
-            & (hsv[..., 1] >= self.config.road_saturation_min)
-            & (hsv[..., 1] <= self.config.road_saturation_max)
-            & (hsv[..., 2] >= self.config.road_value_min)
+        The previous local-contrast detector also selected terrain borders,
+        texture and decorative map lines. Roads on the bundled ESO minimap
+        are much more consistently identified by color: they are light,
+        warm/pale strokes on darker brown terrain.
+        """
+        image_rgb = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2RGB)
+        r = image_rgb[..., 0].astype(np.int16)
+        g = image_rgb[..., 1].astype(np.int16)
+        b = image_rgb[..., 2].astype(np.int16)
+
+        # Pale warm road pixels. Keep this deliberately narrow so terrain
+        # texture and dark contour lines are not classified as roads.
+        mask = (
+            (r >= self.config.road_red_min)
+            & (g >= self.config.road_green_min)
+            & (b >= self.config.road_blue_min)
+            & ((r - g) <= self.config.road_red_green_max_diff)
+            & ((g - b) >= self.config.road_green_blue_min_diff)
         )
-        mask = (hsv_mask & (contrast >= self.config.road_local_contrast))
+
         mask &= ~water_mask
         mask = (mask.astype(np.uint8) * 255)
 
-        kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
-        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel, iterations=1)
-        mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel, iterations=2)
-        mask = self._filter_components(mask, self.config.min_road_component_area)
+        # Join neighboring pixels belonging to the same road stroke.
+        close_kernel = cv2.getStructuringElement(
+            cv2.MORPH_ELLIPSE, (5, 5)
+        )
+        open_kernel = cv2.getStructuringElement(
+            cv2.MORPH_ELLIPSE, (3, 3)
+        )
+        mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, close_kernel, iterations=1)
+        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, open_kernel, iterations=1)
+
+        # Small compact components are usually map icons rather than roads.
+        count, labels, stats, _ = cv2.connectedComponentsWithStats(mask, 8)
+        filtered = np.zeros_like(mask)
+        for label in range(1, count):
+            area = int(stats[label, cv2.CC_STAT_AREA])
+            width = int(stats[label, cv2.CC_STAT_WIDTH])
+            height = int(stats[label, cv2.CC_STAT_HEIGHT])
+            longest = max(width, height)
+            shortest = max(1, min(width, height))
+            elongated = longest / shortest >= 1.5
+            if area >= self.config.min_road_component_area and (elongated or area >= 80):
+                filtered[labels == label] = 255
 
         if self.config.road_dilation > 0:
             size = self.config.road_dilation * 2 + 1
             dilation_kernel = cv2.getStructuringElement(
                 cv2.MORPH_ELLIPSE, (size, size)
             )
-            mask = cv2.dilate(mask, dilation_kernel)
+            filtered = cv2.dilate(filtered, dilation_kernel)
 
         border = self.config.map_border
-        mask[:border, :] = 0
-        mask[-border:, :] = 0
-        mask[:, :border] = 0
-        mask[:, -border:] = 0
-        return mask.astype(bool)
+        filtered[:border, :] = 0
+        filtered[-border:, :] = 0
+        filtered[:, :border] = 0
+        filtered[:, -border:] = 0
+        return filtered.astype(bool)
 
     def _detect_player(self, image_bgr: np.ndarray) -> tuple[int, int]:
         hsv = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2HSV)

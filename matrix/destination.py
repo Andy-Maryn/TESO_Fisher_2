@@ -16,19 +16,17 @@ class Destination:
 
     @classmethod
     def load_data(cls) -> None:
+
+        # The parser is not guaranteed to have been initialized before
+        # Destination.load_data() is called (for example from an autouse pytest
+        # fixture). Initialize it here instead of passing None to NetworkX.
         if AdjacencyMatrixParser.map_destination is None:
             AdjacencyMatrixParser.load_data()
 
         cls.destination_points = AdjacencyMatrixParser.destination_points
-        cls.adjacency_matrix = np.asarray(
-            AdjacencyMatrixParser.map_destination,
-            dtype=int
-        )
+        cls.adjacency_matrix = np.asarray(AdjacencyMatrixParser.map_destination, dtype=int)
 
-        cls.graph = nx.from_numpy_array(
-            cls.adjacency_matrix,
-            create_using=nx.DiGraph
-        )
+        cls.graph = nx.from_numpy_array(cls.adjacency_matrix, create_using=nx.DiGraph)
 
     @classmethod
     def get_destination_point(cls):
