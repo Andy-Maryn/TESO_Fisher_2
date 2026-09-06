@@ -6,14 +6,14 @@ nearest shore using A*.
 """
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 from heapq import heappop, heappush
-import math
 from pathlib import Path
 
 import cv2
 import numpy as np
-from PIL import Image, ImageGrab
+from PIL import Image
 
 
 @dataclass(frozen=True)
@@ -125,13 +125,13 @@ class MinimapAnalyzer:
         blue_minus_red = blue.astype(np.int16) - red.astype(np.int16)
 
         mask = (
-            (hsv[..., 0] >= 28)
-            & (hsv[..., 0] <= 50)
-            & (hsv[..., 1] >= 20)
-            & (hsv[..., 1] <= 150)
-            & (hsv[..., 2] >= 120)
-            & (green_minus_red >= 0)
-            & (blue_minus_red >= -80)
+                (hsv[..., 0] >= 28)
+                & (hsv[..., 0] <= 50)
+                & (hsv[..., 1] >= 20)
+                & (hsv[..., 1] <= 150)
+                & (hsv[..., 2] >= 120)
+                & (green_minus_red >= 0)
+                & (blue_minus_red >= -80)
         )
         mask = mask.astype(np.uint8) * 255
 
@@ -163,11 +163,11 @@ class MinimapAnalyzer:
         # Pale warm road pixels. Keep this deliberately narrow so terrain
         # texture and dark contour lines are not classified as roads.
         mask = (
-            (r >= self.config.road_red_min)
-            & (g >= self.config.road_green_min)
-            & (b >= self.config.road_blue_min)
-            & ((r - g) <= self.config.road_red_green_max_diff)
-            & ((g - b) >= self.config.road_green_blue_min_diff)
+                (r >= self.config.road_red_min)
+                & (g >= self.config.road_green_min)
+                & (b >= self.config.road_blue_min)
+                & ((r - g) <= self.config.road_red_green_max_diff)
+                & ((g - b) >= self.config.road_green_blue_min_diff)
         )
 
         mask &= ~water_mask
@@ -279,11 +279,11 @@ class AStarPlanner:
         return math.hypot(a[0] - b[0], a[1] - b[1])
 
     def plan(
-        self,
-        walkable_mask: np.ndarray,
-        road_mask: np.ndarray,
-        start: tuple[int, int],
-        goal: tuple[int, int],
+            self,
+            walkable_mask: np.ndarray,
+            road_mask: np.ndarray,
+            start: tuple[int, int],
+            goal: tuple[int, int],
     ) -> list[tuple[int, int]]:
         walkable = self._downsample_mask(walkable_mask)
         road = self._downsample_mask(road_mask)
@@ -353,8 +353,8 @@ class AStarPlanner:
 
     @staticmethod
     def _nearest_walkable(
-        walkable: np.ndarray,
-        point: tuple[int, int],
+            walkable: np.ndarray,
+            point: tuple[int, int],
     ) -> tuple[int, int]:
         ys, xs = np.where(walkable)
         if len(xs) == 0:
@@ -368,16 +368,16 @@ class LocalNavigator:
     """Build a route from the player to the nearest visible water shore."""
 
     def __init__(
-        self,
-        analyzer: MinimapAnalyzer | None = None,
-        planner: AStarPlanner | None = None,
+            self,
+            analyzer: MinimapAnalyzer | None = None,
+            planner: AStarPlanner | None = None,
     ) -> None:
         self.analyzer = analyzer or MinimapAnalyzer()
         self.planner = planner or AStarPlanner(self.analyzer.config.path_scale)
 
     def _nearest_shore(
-        self,
-        minimap: MinimapMap,
+            self,
+            minimap: MinimapMap,
     ) -> tuple[int, int] | None:
         water = minimap.water_mask
         if not water.any():
@@ -401,9 +401,9 @@ class LocalNavigator:
         return int(xs[index]), int(ys[index])
 
     def plan_to_point(
-        self,
-        image: np.ndarray | str | Path,
-        target: tuple[int, int],
+            self,
+            image: np.ndarray | str | Path,
+            target: tuple[int, int],
     ) -> NavigationResult:
         minimap = self.analyzer.analyze(image)
         path = self.planner.plan(
@@ -435,8 +435,8 @@ class LocalNavigator:
 
 
 def draw_debug(
-    minimap: MinimapMap,
-    result: NavigationResult | None = None,
+        minimap: MinimapMap,
+        result: NavigationResult | None = None,
 ) -> np.ndarray:
     """Return an RGB debug image with detected water, roads and optional path."""
     overlay = minimap.image.copy()
@@ -445,10 +445,10 @@ def draw_debug(
     water_color = np.array([60, 150, 255], dtype=np.uint8)
     road_color = np.array([255, 80, 190], dtype=np.uint8)
     overlay[minimap.water_mask] = (
-        0.55 * overlay[minimap.water_mask] + 0.45 * water_color
+            0.55 * overlay[minimap.water_mask] + 0.45 * water_color
     ).astype(np.uint8)
     overlay[minimap.road_mask] = (
-        0.55 * overlay[minimap.road_mask] + 0.45 * road_color
+            0.55 * overlay[minimap.road_mask] + 0.45 * road_color
     ).astype(np.uint8)
 
     px, py = minimap.player

@@ -5,7 +5,6 @@ import cv2
 
 from navigation.minimap import LocalNavigator, MinimapAnalyzer, MinimapRegion, draw_debug
 
-
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "tests" / "data_screen_capture" / "coords_and_heading"
 OUTPUT = ROOT.parent / "minimap_navigation_debug.png"

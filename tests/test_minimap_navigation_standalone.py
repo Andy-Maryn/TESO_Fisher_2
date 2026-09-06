@@ -1,33 +1,55 @@
 """Small standalone regression tests for the minimap CV pipeline."""
 from pathlib import Path
 
-import cv2
+import pytest
+import pytest_html
 
-from navigation.minimap import LocalNavigator, MinimapAnalyzer
-
-
-SAMPLE = next((Path(__file__).parent / "data_screen_capture" / "coords_and_heading").glob("*.jpeg"))
-
-
-def load_minimap():
-    image = cv2.imread(str(SAMPLE))
-    if image is None:
-        raise AssertionError(f"Could not load sample: {SAMPLE}")
-    return cv2.cvtColor(image[0:280, 1640:1920], cv2.COLOR_BGR2RGB)
+from navigation.minimap.minimap import MinimapAnalyzer, LocalNavigator
+from screenCapture.minimap_carture.minimap_capture import MinimapCapture
+from tests.conftest import base_image_array
 
 
-def test_detects_large_water_area():
-    minimap = MinimapAnalyzer().analyze(load_minimap())
-    assert minimap.water_mask.sum() > 5_000
+class TestNavigatorStandalone:
 
+    @pytest.mark.parametrize('minimap_image, expected_location',
+                             [pytest.param(Path("Fri Sep  4 21_40_27 2026 298515 221476 10289 19 270 269.jpeg"),
+                                           (120, 155),
+                                           id="Fri Sep  4 21_40_27 2026 => position: (298515, 221476, 10289, 270, 269)"),
+                              # TODO: rename
+                              ], indirect=['minimap_image'])
+    def test_detects_large_water_area(self, minimap_image, expected_location, extras):
+        minimap = MinimapAnalyzer().analyze(MinimapCapture.capture)
+        extras.append(pytest_html.extras.image(base_image_array(MinimapCapture.draw_water(minimap), mode='RGB')))
+        assert minimap.water_mask.sum() > 5_000
 
-def test_detects_player_near_minimap_center():
-    player = MinimapAnalyzer().analyze(load_minimap()).player
-    assert 120 <= player[0] <= 155
-    assert 120 <= player[1] <= 155
+    @pytest.mark.parametrize('minimap_image, expected_location',
+                             [pytest.param(Path("Fri Sep  4 21_40_27 2026 298515 221476 10289 19 270 269.jpeg"),
+                                           (120, 155),
+                                           id="Fri Sep  4 21_40_27 2026 => position: (298515, 221476, 10289, 270, 269)"),
+                              # TODO: rename
+                              ], indirect=['minimap_image'])
+    def test_detects_player_near_minimap_center(self, minimap_image, expected_location, extras):
+        minimap = MinimapAnalyzer().analyze(MinimapCapture.capture)
+        extras.append(pytest_html.extras.image(base_image_array(MinimapCapture.draw_player(minimap), mode='RGB')))
+        assert 120 <= minimap.player[0] <= 155
+        assert 120 <= minimap.player[1] <= 155
 
-
-def test_finds_path_to_visible_water_shore():
-    result = LocalNavigator().find_nearest_water(load_minimap())
-    assert result.target is not None
-    assert result.path
+    @pytest.mark.parametrize('minimap_image, expected_location',
+                             [pytest.param(Path("Fri Sep  4 21_40_27 2026 298515 221476 10289 19 270 269.jpeg"),
+                                           (120, 155),
+                                           id="Fri Sep  4 21_40_27 2026 => position: (298515, 221476, 10289, 270, 269)"),
+                              # TODO: rename
+                              ], indirect=['minimap_image'])
+    def test_finds_path_to_visible_water_shore(self, minimap_image, expected_location, extras):
+        minimap = MinimapAnalyzer().analyze(MinimapCapture.capture)
+        result = LocalNavigator().find_nearest_water(MinimapCapture.capture)
+        extras.append(
+            pytest_html.extras.image(base_image_array(MinimapCapture.draw_mask(minimap, result.player), mode='RGB')))
+        extras.append(
+            pytest_html.extras.image(base_image_array(MinimapCapture.draw_mask(minimap, result.target), mode='RGB')))
+        extras.append(pytest_html.extras.image(
+            base_image_array(MinimapCapture.draw_mask(minimap, result.water_mask), mode='RGB')))
+        extras.append(
+            pytest_html.extras.image(base_image_array(MinimapCapture.draw_mask(minimap, result.road_mask), mode='RGB')))
+        assert result.target is not None
+        assert result.path

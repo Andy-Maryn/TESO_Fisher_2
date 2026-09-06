@@ -3,14 +3,12 @@ import io
 import time
 from pathlib import Path
 
-import cv2
 import numpy as np
 import psutil
 import pytest
 import pytest_html
 from PIL import Image
 from numpy import ndarray
-
 
 from csvParser.adjacency_matrix import AdjacencyMatrixParser
 from csvParser.requirements_parser import RequirementsParser, Requirements
@@ -146,6 +144,7 @@ def mouse_sensitivity():
 def reset():
     Destination.current_destination = 0
     Destination.load_data()
+
 
 @pytest.fixture
 def minimap_image(request, extras):

@@ -1,10 +1,9 @@
 from pathlib import Path
 
-import cv2
 import pytest
 import pytest_html
 
-from navigation.minimap import LocalNavigator, MinimapAnalyzer, draw_debug
+from navigation.minimap.minimap import LocalNavigator, MinimapAnalyzer, draw_debug
 from screenCapture.minimap_carture.minimap_capture import MinimapCapture
 from tests.conftest import base_image_array
 
@@ -67,4 +66,3 @@ class TestNavigator:
         extras.append(pytest_html.extras.image(base_image_array(debug, mode='RGB')))
 
         assert debug.size > 0
-

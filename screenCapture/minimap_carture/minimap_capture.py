@@ -1,7 +1,7 @@
 """Minimap capture"""
 import cv2
 
-from navigation.minimap import MinimapAnalyzer, MinimapMap
+from navigation.minimap.minimap import MinimapMap
 from screenCapture.screen_capture import *
 
 
@@ -44,6 +44,19 @@ class MinimapCapture(ScreeCapture):
         return image
 
     @classmethod
+    def draw_mask(cls, minimap, mask):
+        """Draw the mask."""
+        debug_image = minimap.image.copy()
+
+        debug_image = cls._overlay_mask(
+            debug_image,
+            mask,
+            color=(0, 255, 0),
+            alpha=0.35,
+        )
+        return debug_image
+
+    @classmethod
     def draw_water(cls, minimap):
         """Draw the water."""
         debug_image = minimap.image.copy()
@@ -71,11 +84,11 @@ class MinimapCapture(ScreeCapture):
 
     @classmethod
     def _overlay_mask(cls,
-            minimap: MinimapMap,
-            mask: np.ndarray,
-            color: tuple[int, int, int],
-            alpha: float = 0.4,
-    ) -> np.ndarray:
+                      minimap: MinimapMap,
+                      mask: np.ndarray,
+                      color: tuple[int, int, int],
+                      alpha: float = 0.4,
+                      ) -> MinimapMap:
         """Overlay a colored boolean mask on an RGB image."""
         color_layer = np.zeros_like(minimap)
         color_layer[mask] = color

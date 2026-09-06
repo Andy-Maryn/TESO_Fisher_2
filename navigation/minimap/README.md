@@ -33,6 +33,7 @@ The script prints detected player/water/road statistics and creates
 `../minimap_navigation_debug.png` relative to the project directory.
 
 The debug image uses:
+
 - cyan circle: detected player
 - magenta overlay: road candidates
 - blue overlay: detected water
